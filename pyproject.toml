@@ -13,6 +13,20 @@ dependencies = [
     "mashumaro"
 ]
 
+[project.optional-dependencies]
+dev = ["pre-commit"]
+
+[tool.ruff]
+select = ["E", "F", "RUF", "PERF", "TRY", "PL", "PTH", "ARG", "SIM", "PIE", "C4",
+    "B", "S", "UP", "C90", "A", "T20", "FURB"]
+preview = true
+ignore = ["RUF001", "RUF002", "PLR0913", "RUF003"]
+
+target-version = "py312"
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+
 [build-system]
 requires = ["flit_core>=3.9.0,<4"]
 build-backend = "flit_core.buildapi"
