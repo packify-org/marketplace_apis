@@ -1,0 +1,14 @@
+<component name="CopyrightManager">
+  <settings default="MarketplaceApis_GPLv3">
+    <LanguageOptions name="Python">
+      <option name="fileTypeOverride" value="3" />
+      <option name="block" value="false" />
+      <option name="separateBefore" value="true" />
+      <option name="separateAfter" value="true" />
+      <option name="filler" value="+" />
+    </LanguageOptions>
+    <LanguageOptions name="__TEMPLATE__">
+      <option name="block" value="false" />
+    </LanguageOptions>
+  </settings>
+</component>
