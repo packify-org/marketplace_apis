@@ -11,9 +11,17 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from enum import StrEnum
+
+from marketplace_apis.common.utils import TranslatedStrEnum
 
 
-class MarketplaceEnum(StrEnum):
+class MarketplaceEnum(TranslatedStrEnum):
+    __translations__ = {
+        "ozon": "Ozon",
+        "yandex_market": "Яндекс.Маркет",
+        "wildberries": "Wildberries",
+    }
+
     OZON = "ozon"
     YANDEX_MARKET = "yandex_market"
+    WILDBERRIES = "wildberries"

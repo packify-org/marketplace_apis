@@ -11,8 +11,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 from datetime import datetime, UTC, tzinfo
+from enum import StrEnum
 
 
 def datetime_to_iso(dt: datetime, tz: tzinfo = UTC) -> str:
@@ -31,3 +31,11 @@ def dict_datetime_to_iso(dict_: dict, tz: tzinfo = UTC):
             dict_[k] = datetime_to_iso(v, tz)
         if isinstance(v, dict):
             dict_datetime_to_iso(v, tz)
+
+
+class TranslatedStrEnum(StrEnum):
+    def translate(self) -> str:
+        """Returns russian translation of enum member"""
+        if hasattr(self, "__translations__"):
+            return self.__translations__[self.value]
+        return self.name.capitalize()
