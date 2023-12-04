@@ -34,7 +34,7 @@ def dict_datetime_to_iso(dict_: dict, tz: tzinfo = UTC):
 
 
 class TranslatedStrEnum(StrEnum):
-    def translate(self) -> str:
+    def translation(self) -> str:
         """Returns russian translation of enum member"""
         if hasattr(self, "__translations__"):
             return self.__translations__[self.value]
