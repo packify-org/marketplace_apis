@@ -36,9 +36,16 @@ if __name__ == "__main__":
                 k, v = line.split("=")
                 os.environ[k] = v.strip()
 
-    api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
-    print(api.order.list_orders()[-1])  # noqa: T201
-    # MarketApi.oauth.get_tokens_by_code(
+    # api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
+    # print(api.order.list_orders()[-1])
+    # print(MarketApi.oauth.get_tokens_by_code(
     #     os.getenv("CLIENT_ID"),
-    #     os.getenv("CLIENT_SECRET"), 123456
+    #     os.getenv("CLIENT_SECRET"), 5057115
+    # ))
+    # print(
+    #     MarketApi.oauth.get_tokens_by_refresh(
+    #         os.getenv("CLIENT_ID"),
+    #         os.getenv("CLIENT_SECRET"),
+    #         os.getenv("REFRESH_TOKEN"),
+    #     )
     # )
