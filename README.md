@@ -3,5 +3,21 @@
 Easy way to communicate with russian marketplaces!
 
 ## Currently supported apis:
-- OZON Seller api: supports delivery methods, warehouses, posting and products endpoints
-- YANDEX MARKET api: supports order, campaign endpoints and oauth utils
+
+#### OZON Seller api
+
+Supports endpoints for:
+
+* delivery methods,
+* warehouse,
+* posting,
+* product.
+
+#### YANDEX MARKET api
+
+Supports endpoints for:
+
+* order,
+* campaign,
+* warehouse,
+* oauth.

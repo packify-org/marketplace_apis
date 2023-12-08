@@ -15,6 +15,7 @@ from marketplace_apis.yandex.campaigns.methods import CampaignMethods
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.oauth.methods import OAuthMethods
 from marketplace_apis.yandex.order.methods import OrderMethods
+from marketplace_apis.yandex.warehouse.methods import WarehouseMethods
 
 
 class MarketApi:
@@ -24,6 +25,7 @@ class MarketApi:
         self.requester = MarketApiRequester(token, campaign_id)
 
         self.order = OrderMethods(self.requester)
+        self.warehouse = WarehouseMethods(self.requester)
         self.campaign = CampaignMethods(self.requester)
 
 
@@ -39,7 +41,8 @@ if __name__ == "__main__":
 
     api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
     # print(api.campaign.list_campaigns())
-    # print(api.campaign.get_settings(""))
+    # print(api.warehouse.list_fby_warehouses())
+    # print(api.warehouse.list_warehouses(729018))
     # print(api.order.list_orders()[-1])
     # print(MarketApi.oauth.get_tokens_by_code(
     #     os.getenv("CLIENT_ID"),
