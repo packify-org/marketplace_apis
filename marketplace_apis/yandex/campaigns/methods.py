@@ -81,7 +81,7 @@ class CampaignMethods(ABCMethods):
 
         def make_request():
             resp, decoded_resp = self._requester.get(
-                urljoin(API_PATH["get_campaign_by_login"], f"by_login/{login}"),
+                urljoin(API_PATH["get_campaign_by_login"], f"{login}"),
                 params={"pageSize": page, "page": page_size},
             )
             nonlocal raw_campaigns

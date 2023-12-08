@@ -45,7 +45,7 @@ class MarketApiRequester(Requester):
 
     def __init__(self, token: str, campaign_id: str | None = None):
         if campaign_id:
-            self.ENDPOINT = self.ENDPOINT + campaign_id + "/"
+            self.ENDPOINT = self.ENDPOINT + "campaigns/" + campaign_id + "/"
         limiter_transport = LimiterTransport(
             per_hour=1000000, max_delay=500, raise_when_fail=False
         )

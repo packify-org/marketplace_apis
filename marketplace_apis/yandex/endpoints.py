@@ -13,7 +13,7 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 API_PATH = {
     # region campaign
-    "list_campaigns": "https://api.partner.market.yandex.ru/campaigns",
+    "list_campaigns": "https://api.partner.market.yandex.ru/campaigns/",
     "get_campaign_by_id": "https://api.partner.market.yandex.ru/campaigns/",
     "get_campaign_logins": "https://api.partner.market.yandex.ru/campaigns/",
     "get_campaign_settings": "https://api.partner.market.yandex.ru/campaigns/",
