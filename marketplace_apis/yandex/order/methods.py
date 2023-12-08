@@ -14,16 +14,16 @@
 from typing import Unpack
 
 from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
 from marketplace_apis.common.utils import dict_datetime_to_iso
 from marketplace_apis.yandex.base import UTC3Timezone
 from marketplace_apis.yandex.endpoints import API_PATH
+from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.order.methods_types import ListOrders
 from marketplace_apis.yandex.order.order import Order
 
 
 class OrderMethods(ABCMethods):
-    def __init__(self, requester: Requester):
+    def __init__(self, requester: MarketApiRequester):
         super().__init__(requester)
 
     def list_orders(
@@ -44,10 +44,11 @@ class OrderMethods(ABCMethods):
         if kwargs is None:
             kwargs = {}
         dict_datetime_to_iso(kwargs, tz=UTC3Timezone())
+        url = self._requester.build_campaign_url(API_PATH["list_orders"])
 
         def make_request():
             resp, decoded_resp = self._requester.get(
-                API_PATH["list_orders"],
+                url,
                 params={"pageSize": page_size, "page": page, **kwargs},
             )
             nonlocal raw_orders

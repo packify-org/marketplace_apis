@@ -27,9 +27,12 @@ class MarketApi:
         self,
         token: str,
         campaign_id: str | None = None,
+        business_id: str | None = None,
         limiter_transport: LimiterTransport | None = None,
     ):
-        self.requester = MarketApiRequester(token, campaign_id, limiter_transport)
+        self.requester = MarketApiRequester(
+            token, campaign_id, business_id, limiter_transport
+        )
 
         self.order = OrderMethods(self.requester)
         self.warehouse = WarehouseMethods(self.requester)
@@ -46,10 +49,12 @@ if __name__ == "__main__":
                 k, v = line.split("=")
                 os.environ[k] = v.strip()
 
-    api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
+    api = MarketApi(
+        os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"), os.getenv("BUSINESS_ID")
+    )
     # print(api.campaign.list_campaigns())
     # print(api.warehouse.list_fby_warehouses())
-    # print(api.warehouse.list_warehouses(729018))
+    # print(api.warehouse.list_warehouses())
     # print(api.order.list_orders()[-1])
     # print(MarketApi.oauth.get_tokens_by_code(
     #     os.getenv("CLIENT_ID"),

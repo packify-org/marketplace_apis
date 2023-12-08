@@ -13,6 +13,7 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 from http import HTTPStatus
+from urllib.parse import urljoin
 
 from httpx import Auth
 from httpx_ratelimiter import LimiterTransport
@@ -43,15 +44,26 @@ class MarketApiRequester(Requester):
             raise MarketApiError(response_.json())
         return response_, data
 
+    def build_campaign_url(self, endpoint):
+        if not self.campaign_id:
+            raise ValueError("campaign_id is None")
+        return urljoin(f"campaigns/{self.campaign_id}/", endpoint)
+
+    def build_business_url(self, endpoint):
+        if not self.business_id:
+            raise ValueError("business_id is None")
+        return urljoin(f"businesses/{self.business_id}/", endpoint)
+
     def __init__(
         self,
         token: str,
         campaign_id: str | None = None,
+        business_id: str | None = None,
         limiter_transport: LimiterTransport | None = None,
         use_limiter_transport: bool = True,
     ):
-        if campaign_id:
-            self.ENDPOINT = self.ENDPOINT + "campaigns/" + campaign_id + "/"
+        self.campaign_id = campaign_id
+        self.business_id = business_id
         if use_limiter_transport and limiter_transport is None:
             limiter_transport = LimiterTransport(
                 per_second=10, max_delay=500, raise_when_fail=False

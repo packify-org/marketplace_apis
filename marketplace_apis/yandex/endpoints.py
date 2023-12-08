@@ -13,15 +13,15 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 API_PATH = {
     # region campaign
-    "list_campaigns": "https://api.partner.market.yandex.ru/campaigns/",
-    "get_campaign_by_id": "https://api.partner.market.yandex.ru/campaigns/",
-    "get_campaign_logins": "https://api.partner.market.yandex.ru/campaigns/",
-    "get_campaign_settings": "https://api.partner.market.yandex.ru/campaigns/",
-    "get_campaign_by_login": "https://api.partner.market.yandex.ru/campaigns/by_login/",
+    "list_campaigns": "campaigns/",
+    "get_campaign_by_id": "campaigns/",
+    "get_campaign_logins": "campaigns/",
+    "get_campaign_settings": "campaigns/",
+    "get_campaign_by_login": "campaigns/by_login/",
     # endregion
     # region warehouse
     "list_fby_warehouses": "https://api.partner.market.yandex.ru/warehouses",
-    "list_warehouses": "https://api.partner.market.yandex.ru/businesses/",
+    "list_warehouses": "warehouses",
     # endregion
     # region orders
     "list_orders": "orders",

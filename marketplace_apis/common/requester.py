@@ -57,7 +57,7 @@ class Requester:
             headers=headers,
             base_url=endpoint,
         )
-        self.client.headers["UserModel-Agent"] = "Packify/0.0.1"
+        self.client.headers["UserModel-Agent"] = "MarketplaceApis/0.1.0"
 
     @_check_for_errors_decorator
     def get(
