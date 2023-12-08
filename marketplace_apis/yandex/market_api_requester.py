@@ -43,15 +43,22 @@ class MarketApiRequester(Requester):
             raise MarketApiError(response_.json())
         return response_, data
 
-    def __init__(self, token: str, campaign_id: str | None = None):
+    def __init__(
+        self,
+        token: str,
+        campaign_id: str | None = None,
+        limiter_transport: LimiterTransport | None = None,
+        use_limiter_transport: bool = True,
+    ):
         if campaign_id:
             self.ENDPOINT = self.ENDPOINT + "campaigns/" + campaign_id + "/"
-        limiter_transport = LimiterTransport(
-            per_hour=1000000, max_delay=500, raise_when_fail=False
-        )
+        if use_limiter_transport and limiter_transport is None:
+            limiter_transport = LimiterTransport(
+                per_second=10, max_delay=500, raise_when_fail=False
+            )
         super().__init__(
             self.ENDPOINT,
-            limiter_transport,
+            limiter_transport if use_limiter_transport else None,
             headers={"Content-Type": "application/json"},
         )
         self.client.auth = MarketApiAuth(token)

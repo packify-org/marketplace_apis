@@ -11,6 +11,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from httpx_ratelimiter import LimiterTransport
+
 from marketplace_apis.yandex.campaigns.methods import CampaignMethods
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.oauth.methods import OAuthMethods
@@ -21,8 +23,13 @@ from marketplace_apis.yandex.warehouse.methods import WarehouseMethods
 class MarketApi:
     oauth = OAuthMethods
 
-    def __init__(self, token: str, campaign_id: str | None = None):
-        self.requester = MarketApiRequester(token, campaign_id)
+    def __init__(
+        self,
+        token: str,
+        campaign_id: str | None = None,
+        limiter_transport: LimiterTransport | None = None,
+    ):
+        self.requester = MarketApiRequester(token, campaign_id, limiter_transport)
 
         self.order = OrderMethods(self.requester)
         self.warehouse = WarehouseMethods(self.requester)
