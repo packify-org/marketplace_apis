@@ -14,7 +14,7 @@
 
 from dataclasses import dataclass
 
-from marketplace_apis.common.currency import Currency
+from marketplace_apis.common.enums import Currency
 from marketplace_apis.ozon.base import SellerApiBaseModel
 from marketplace_apis.ozon.product.enums import PriceIndex
 

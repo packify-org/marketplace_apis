@@ -11,19 +11,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-API_PATH = {
-    # region campaign
-    "list_campaigns": "campaigns",
-    "get_campaign_by_id": "campaigns/",
-    "get_campaign_logins": "campaigns/",
-    "get_campaign_settings": "campaigns/",
-    "get_campaign_by_login": "campaigns/by_login",
-    # endregion
-    # region orders
-    "list_orders": "orders",
-    "get_order_by_number": "orders",
-    # endregion
-    # region oauth
-    "oauth_token": "https://oauth.yandex.ru/token",
-    # endregion
-}
+
+from dataclasses import dataclass
+
+from marketplace_apis.yandex.campaigns.enums import CampaignSettingsScheduleSourceType
+from marketplace_apis.yandex.campaigns.settings_delivery import CampaignSettingsDelivery
+from marketplace_apis.yandex.common.region import Region
+
+
+@dataclass
+class CampaignSettingsLocalRegion(Region):
+    """Информация о своем регионе магазина."""
+
+    deliveryOptionsSource: CampaignSettingsScheduleSourceType
+    """Источник информации о расписании работы службы доставки."""
+    delivery: CampaignSettingsDelivery
+    """Информация о доставке в своем регионе магазина."""

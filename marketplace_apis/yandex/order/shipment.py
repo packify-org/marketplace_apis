@@ -12,10 +12,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date, time
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderParcelStatusType
@@ -31,7 +30,7 @@ class OrderShipment(MarketApiBaseModel):
     """Статус заказа в партнерской службе доставки."""
     shipmentDate: date
     """День, в который нужно отгрузить заказ службе доставки."""
-    id_: int = field(metadata=field_options(alias="id"))
+    id_: int
     """Идентификатор посылки, присвоенный Маркетом."""
     shipmentTime: time | None = None
     """Время, когда нужно отгрузить заказы службе доставки."""

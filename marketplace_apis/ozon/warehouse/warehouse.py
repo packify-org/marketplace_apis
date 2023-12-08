@@ -13,8 +13,9 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from dataclasses import dataclass
 
+from marketplace_apis.common.enums import Day
 from marketplace_apis.ozon.base import SellerApiBaseModel
-from marketplace_apis.ozon.warehouse.enums import WarehouseWorkingDay, WarehouseStatus
+from marketplace_apis.ozon.warehouse.enums import WarehouseStatus
 from marketplace_apis.ozon.warehouse.first_mile import FirstMile
 
 
@@ -56,5 +57,5 @@ class Warehouse(SellerApiBaseModel):
     """Количество рабочих дней склада."""
     status: WarehouseStatus
     """Статус склада."""
-    working_days: list[WarehouseWorkingDay]
+    working_days: list[Day]
     """Рабочие дни склада."""

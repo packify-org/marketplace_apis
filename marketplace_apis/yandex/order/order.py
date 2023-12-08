@@ -12,12 +12,11 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 
-from mashumaro import field_options
 
-from marketplace_apis.common.currency import Currency
+from marketplace_apis.common.enums import Currency
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.buyer import OrderBuyer
 from marketplace_apis.yandex.order.delivery import OrderDelivery
@@ -97,7 +96,7 @@ class Order(MarketApiBaseModel):
     Используется только совместно с параметром ``payment-method=YANDEX``."""
     cancelRequested: bool
     """Запрошена ли отмена."""
-    id_: int = field(metadata=field_options(alias="id"))
+    id_: int
     """Идентификатор заказа."""
     subsidies: list[OrderItemSubsidy] | None = None
     """Список субсидий по типам."""

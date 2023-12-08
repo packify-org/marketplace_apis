@@ -12,9 +12,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 
@@ -25,5 +24,5 @@ class OrderParcelBox(MarketApiBaseModel):
 
     fulfilmentId: str
     """Идентификатор грузового места в информационной системе магазина."""
-    id_: int = field(metadata=field_options(alias="id"))
+    id_: int
     """Идентификатор грузоместа."""

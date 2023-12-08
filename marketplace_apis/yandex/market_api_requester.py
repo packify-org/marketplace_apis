@@ -34,7 +34,7 @@ class MarketApiAuth(Auth):
 
 
 class MarketApiRequester(Requester):
-    ENDPOINT = "https://api.partner.market.yandex.ru/campaigns/"
+    ENDPOINT = "https://api.partner.market.yandex.ru/"
 
     @staticmethod
     def check_for_errors(func, self, *args, **kwargs):
@@ -43,8 +43,9 @@ class MarketApiRequester(Requester):
             raise MarketApiError(response_.json())
         return response_, data
 
-    def __init__(self, token: str, campaign_id: str):
-        self.ENDPOINT = self.ENDPOINT + campaign_id + "/"
+    def __init__(self, token: str, campaign_id: str | None = None):
+        if campaign_id:
+            self.ENDPOINT = self.ENDPOINT + campaign_id + "/"
         limiter_transport = LimiterTransport(
             per_hour=1000000, max_delay=500, raise_when_fail=False
         )

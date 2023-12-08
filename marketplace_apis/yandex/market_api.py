@@ -11,7 +11,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
+from marketplace_apis.yandex.campaigns.methods import CampaignMethods
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.oauth.methods import OAuthMethods
 from marketplace_apis.yandex.order.methods import OrderMethods
@@ -20,10 +20,11 @@ from marketplace_apis.yandex.order.methods import OrderMethods
 class MarketApi:
     oauth = OAuthMethods
 
-    def __init__(self, token: str, campaign_id: str):
+    def __init__(self, token: str, campaign_id: str | None = None):
         self.requester = MarketApiRequester(token, campaign_id)
 
         self.order = OrderMethods(self.requester)
+        self.campaign = CampaignMethods(self.requester)
 
 
 if __name__ == "__main__":
@@ -36,11 +37,13 @@ if __name__ == "__main__":
                 k, v = line.split("=")
                 os.environ[k] = v.strip()
 
-    # api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
+    api = MarketApi(os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"))
+    # print(api.campaign.list_campaigns())
+    # print(api.campaign.get_settings(""))
     # print(api.order.list_orders()[-1])
     # print(MarketApi.oauth.get_tokens_by_code(
     #     os.getenv("CLIENT_ID"),
-    #     os.getenv("CLIENT_SECRET"), 5057115
+    #     os.getenv("CLIENT_SECRET"), 8863298
     # ))
     # print(
     #     MarketApi.oauth.get_tokens_by_refresh(

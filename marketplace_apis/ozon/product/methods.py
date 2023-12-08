@@ -35,7 +35,7 @@ class ProductMethods(ABCMethods):
 
         :return: List of Products
         """
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["list_product_info"],
             data={
                 "offer_id": offer_id,

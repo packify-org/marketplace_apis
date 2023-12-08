@@ -12,9 +12,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderVatType, OrderItemInstanceType
@@ -77,7 +76,7 @@ class OrderItem(MarketApiBaseModel):
 
     *Внимание!* Параметр устарел, временно поддерживается, но не доступен для ввода и
     редактирования."""
-    id_: int = field(metadata=field_options(alias="id"))
+    id_: int
     """Идентификатор товара в заказе."""
     promos: list[OrderItemPromo] | None = None
     """Информация о вознаграждениях партнеру за скидки на товар по промокодам, купонам

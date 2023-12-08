@@ -46,7 +46,7 @@ class OrderMethods(ABCMethods):
         dict_datetime_to_iso(kwargs, tz=UTC3Timezone())
 
         def make_request():
-            resp, decoded_resp = self.requester.get(
+            resp, decoded_resp = self._requester.get(
                 API_PATH["list_orders"],
                 params={"pageSize": page_size, "page": page, **kwargs},
             )
@@ -61,10 +61,11 @@ class OrderMethods(ABCMethods):
 
         return [Order.from_dict(raw_order) for raw_order in raw_orders]
 
+    # TODO: implement this
     # def get_by_number(self, posting_number: str, with_: GetPostingsWith = None):
     #     if with_ is None:
     #         with_ = {}
-    #     response, data = self.requester.post(
+    #     response, data = self._requester.post(
     #         API_PATH["get_posting_by_number"],
     #         data={"posting_number": posting_number, "with": with_},
     #     )

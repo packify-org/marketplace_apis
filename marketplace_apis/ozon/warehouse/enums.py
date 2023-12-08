@@ -12,19 +12,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from enum import StrEnum, IntEnum
-
-
-class WarehouseWorkingDay(IntEnum):
-    """Рабочие дни склада."""
-
-    MONDAY = 1
-    TUESDAY = 2
-    WEDNESDAY = 3
-    THURSDAY = 4
-    FRIDAY = 5
-    SATURDAY = 6
-    SUNDAY = 7
+from enum import StrEnum
 
 
 class WarehouseStatus(StrEnum):

@@ -16,7 +16,7 @@ from datetime import datetime
 
 from mashumaro import field_options
 
-from marketplace_apis.common.currency import Currency
+from marketplace_apis.common.enums import Currency
 from marketplace_apis.ozon.base import SellerApiBaseModel
 from marketplace_apis.ozon.product.attribute import Attribute, ComplexAttribute
 from marketplace_apis.ozon.product.commision import ProductCommission

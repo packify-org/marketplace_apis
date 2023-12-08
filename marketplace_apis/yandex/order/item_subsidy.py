@@ -12,9 +12,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderSubsidyType
@@ -33,5 +32,5 @@ class OrderItemSubsidy(MarketApiBaseModel):
 
     amount: float
     """Сумма субсидии."""
-    type_: OrderSubsidyType = field(metadata=field_options(alias="type"))
+    type_: OrderSubsidyType
     """Тип субсидии."""

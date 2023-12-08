@@ -386,33 +386,6 @@ class OrderDeliveryPartnerType(StrEnum):
     """магазин работает со службой доставки через Маркет"""
 
 
-class RegionType(StrEnum):
-    """Тип региона."""
-
-    CITY_DISTRICT = "CITY_DISTRICT"
-    """район города"""
-    CITY = "CITY"
-    """крупный город"""
-    CONTINENT = "CONTINENT"
-    """континент"""
-    COUNTRY_DISTRICT = "COUNTRY_DISTRICT"
-    """область"""
-    COUNTRY = "COUNTRY"
-    """страна"""
-    REGION = "REGION"
-    """регион"""
-    REPUBLIC_AREA = "REPUBLIC_AREA"
-    """район субъекта федерации"""
-    REPUBLIC = "REPUBLIC"
-    """субъект федерации"""
-    SUBWAY_STATION = "SUBWAY_STATION"
-    """станция метро"""
-    VILLAGE = "VILLAGE"
-    """город"""
-    OTHER = "OTHER"
-    """неизвестный регион"""
-
-
 class OrderLiftType(StrEnum):
     """Тип подъема заказа на этаж."""
 

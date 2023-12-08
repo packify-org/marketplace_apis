@@ -12,9 +12,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderPromoType
@@ -27,7 +26,7 @@ class OrderItemPromo(MarketApiBaseModel):
 
     Передается в валюте заказа, для отделения целой части от дробной используется
     точка."""
-    type_: OrderPromoType = field(metadata=field_options(alias="type"))
+    type_: OrderPromoType
     """Тип скидки"""
     discount: float | None = None
     """Размер пользовательской скидки в валюте покупателя."""

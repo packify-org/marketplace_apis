@@ -12,10 +12,9 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.courier import OrderCourier
@@ -29,7 +28,7 @@ from marketplace_apis.yandex.order.enums import (
     OrderDeliveryDispatchType,
     OrderDeliveryEacType,
 )
-from marketplace_apis.yandex.order.region import Region
+from marketplace_apis.yandex.order.region import OrderRegion
 from marketplace_apis.yandex.order.shipment import OrderShipment
 from marketplace_apis.yandex.order.track import OrderTrack
 
@@ -51,7 +50,7 @@ class OrderDelivery(MarketApiBaseModel):
     Маркет."""
     dates: OrderDeliveryDates
     """Диапазон дат доставки."""
-    region: Region
+    region: OrderRegion
     """Информация о регионах."""
     deliveryServiceId: int
     """Идентификатор службы доставки."""
@@ -59,9 +58,9 @@ class OrderDelivery(MarketApiBaseModel):
     """Стоимость подъема на этаж."""
     shipments: list[OrderShipment]
     """Информация о посылках."""
-    type_: OrderDeliveryType = field(metadata=field_options(alias="type"))
+    type_: OrderDeliveryType
     """Способ доставки заказа."""
-    id_: int | None = field(default=None, metadata=field_options(alias="id"))
+    id_: int | None
     """Идентификатор доставки, присвоенный магазином.
 
     Указывается, только если магазин передал данный идентификатор в ответе на запрос

@@ -47,7 +47,7 @@ class DeliveryMethodMethods(ABCMethods):
         filter_, _ = kwargs_to_filters(kwargs)
 
         def make_request():
-            resp, decoded_resp = self.requester.post(
+            resp, decoded_resp = self._requester.post(
                 API_PATH["list_delivery_methods"],
                 data={
                     "limit": limit,

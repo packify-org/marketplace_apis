@@ -12,25 +12,16 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Self
 
-from mashumaro import field_options
-
-from marketplace_apis.yandex.base import MarketApiBaseModel
-from marketplace_apis.yandex.order.enums import RegionType
+from marketplace_apis.yandex.common.region import Region
 
 
 @dataclass
-class Region(MarketApiBaseModel):
+class OrderRegion(Region):
     """Информация о регионах."""
 
-    name: str
-    """Название региона."""
-    type_: RegionType = field(metadata=field_options(alias="type"))
-    """Тип региона."""
-    id_: int = field(metadata=field_options(alias="id"))
-    """Идентификатор региона."""
     parent: Self | None = None
     """Информация о родительском регионе.
 

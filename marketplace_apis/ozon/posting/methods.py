@@ -55,7 +55,7 @@ class PostingMethods(ABCMethods):
         filter_, with_ = kwargs_to_filters(kwargs)
 
         def make_request():
-            resp, decoded_resp = self.requester.post(
+            resp, decoded_resp = self._requester.post(
                 API_PATH["list_postings"],
                 data={
                     "limit": limit,
@@ -78,20 +78,20 @@ class PostingMethods(ABCMethods):
 
     def get_by_number(self, posting_number: str, **kwargs: Unpack[GetPostingsWith]):
         _, with_ = kwargs_to_filters(kwargs)
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["get_posting_by_number"],
             data={"posting_number": posting_number, "with": with_},
         )
         return Posting.from_dict(data["result"])
 
     def label_task_create(self, posting_numbers: list[str]) -> int:
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["package_label_create"], data={"posting_number": posting_numbers}
         )
         return data["result"]["task_id"]
 
     def label_task_get(self, task_id: int) -> AsyncLabelGetResult:
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["package_label_get"], data={"task_id": task_id}
         )
         return AsyncLabelGetResult.from_dict(data["result"])
@@ -103,7 +103,7 @@ class PostingMethods(ABCMethods):
         **kwargs: Unpack[ShipPostingWith],
     ) -> PostingShipResult:
         _, with_ = kwargs_to_filters(kwargs)
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["ship_posting"],
             data={
                 "posting_number": posting_number,

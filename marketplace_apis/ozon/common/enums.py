@@ -11,19 +11,32 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-API_PATH = {
-    # region campaign
-    "list_campaigns": "campaigns",
-    "get_campaign_by_id": "campaigns/",
-    "get_campaign_logins": "campaigns/",
-    "get_campaign_settings": "campaigns/",
-    "get_campaign_by_login": "campaigns/by_login",
-    # endregion
-    # region orders
-    "list_orders": "orders",
-    "get_order_by_number": "orders",
-    # endregion
-    # region oauth
-    "oauth_token": "https://oauth.yandex.ru/token",
-    # endregion
-}
+
+from enum import StrEnum
+
+
+class RegionType(StrEnum):
+    """Тип региона."""
+
+    CITY_DISTRICT = "CITY_DISTRICT"
+    """район города"""
+    CITY = "CITY"
+    """крупный город"""
+    CONTINENT = "CONTINENT"
+    """континент"""
+    COUNTRY_DISTRICT = "COUNTRY_DISTRICT"
+    """область"""
+    COUNTRY = "COUNTRY"
+    """страна"""
+    REGION = "REGION"
+    """регион"""
+    REPUBLIC_AREA = "REPUBLIC_AREA"
+    """район субъекта федерации"""
+    REPUBLIC = "REPUBLIC"
+    """субъект федерации"""
+    SUBWAY_STATION = "SUBWAY_STATION"
+    """станция метро"""
+    VILLAGE = "VILLAGE"
+    """город"""
+    OTHER = "OTHER"
+    """неизвестный регион"""

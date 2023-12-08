@@ -61,3 +61,7 @@ class MarketApiBaseModel(BaseModel):
             datetime: MarketApiUTC3Datetime(),
             date: MarketApiDate(),
         }
+        aliases: ClassVar = {
+            "type_": "type",
+            "id_": "id",
+        }

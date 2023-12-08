@@ -12,9 +12,8 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from mashumaro import field_options
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderBuyerType
@@ -38,8 +37,8 @@ class OrderBuyer(MarketApiBaseModel):
     """Адрес электронной почты покупателя.
 
     Допускается любой адрес электронной почты, соответствующий стандарту RFC 2822."""
-    type_: OrderBuyerType = field(metadata=field_options(alias="type"))
+    type_: OrderBuyerType
     """Кто покупатель: физическое лицо или организация. Этот параметр используется
     FBS-магазинами, размещающими товары на витрине business.market.yandex.ru."""
-    id_: str = field(metadata=field_options(alias="id"))
+    id_: str
     """Идентификатор покупателя."""

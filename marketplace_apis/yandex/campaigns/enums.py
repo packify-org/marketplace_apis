@@ -11,19 +11,22 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-API_PATH = {
-    # region campaign
-    "list_campaigns": "campaigns",
-    "get_campaign_by_id": "campaigns/",
-    "get_campaign_logins": "campaigns/",
-    "get_campaign_settings": "campaigns/",
-    "get_campaign_by_login": "campaigns/by_login",
-    # endregion
-    # region orders
-    "list_orders": "orders",
-    "get_order_by_number": "orders",
-    # endregion
-    # region oauth
-    "oauth_token": "https://oauth.yandex.ru/token",
-    # endregion
-}
+
+from enum import StrEnum
+
+
+class PlacementType(StrEnum):
+    """Модель, по которой работает магазин"""
+
+    FBS = "FBS"
+    FBY = "FBY"
+    DBS = "DBS"
+
+
+class CampaignSettingsScheduleSourceType(StrEnum):
+    """Источник информации о расписании работы службы доставки."""
+
+    WEB = "WEB"
+    """информация получена из настроек личного кабинета магазина на Яндекс Маркете."""
+    YML = "YML"
+    """информация получена из прайс-листа магазина."""

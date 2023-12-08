@@ -29,7 +29,7 @@ class WarehouseMethods(ABCMethods):
 
         :return: List of warehouses
         """
-        _, data = self.requester.post(
+        _, data = self._requester.post(
             API_PATH["list_warehouses"],
         )
         return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]

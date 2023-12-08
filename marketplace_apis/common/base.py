@@ -26,4 +26,4 @@ class BaseModel(DataClassDictMixin):
 
 class ABCMethods:
     def __init__(self, requester: Requester):
-        self.requester = requester
+        self._requester = requester

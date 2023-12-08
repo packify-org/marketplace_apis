@@ -11,7 +11,22 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from enum import StrEnum
+from enum import IntEnum, StrEnum
+from typing import ClassVar
+
+from marketplace_apis.common.utils import TranslatedStrEnum
+
+
+class Day(IntEnum):
+    """День недели"""
+
+    MONDAY = 1
+    TUESDAY = 2
+    WEDNESDAY = 3
+    THURSDAY = 4
+    FRIDAY = 5
+    SATURDAY = 6
+    SUNDAY = 7
 
 
 class Currency(StrEnum):
@@ -45,3 +60,15 @@ class Currency(StrEnum):
     CNY = "CNY"
     """юань"""
     NONE = ""
+
+
+class MarketplaceEnum(TranslatedStrEnum):
+    __translations__: ClassVar = {
+        "ozon": "Ozon",
+        "yandex_market": "Яндекс.Маркет",
+        "wildberries": "Wildberries",
+    }
+
+    OZON = "ozon"
+    YANDEX_MARKET = "yandex_market"
+    WILDBERRIES = "wildberries"
