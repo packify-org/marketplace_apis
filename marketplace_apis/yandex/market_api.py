@@ -16,6 +16,7 @@ from httpx_ratelimiter import LimiterTransport
 from marketplace_apis.yandex.campaigns.methods import CampaignMethods
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.oauth.methods import OAuthMethods
+from marketplace_apis.yandex.offer_mapping.methods import OfferMappingMethods
 from marketplace_apis.yandex.order.methods import OrderMethods
 from marketplace_apis.yandex.warehouse.methods import WarehouseMethods
 
@@ -35,6 +36,7 @@ class MarketApi:
         )
 
         self.order = OrderMethods(self.requester)
+        self.offer_mapping = OfferMappingMethods(self.requester)
         self.warehouse = WarehouseMethods(self.requester)
         self.campaign = CampaignMethods(self.requester)
 
@@ -52,7 +54,6 @@ if __name__ == "__main__":
     api = MarketApi(
         os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"), os.getenv("BUSINESS_ID")
     )
-    # print(api.campaign.list_campaigns())
     # print(api.warehouse.list_fby_warehouses())
     # print(api.warehouse.list_warehouses())
     # print(api.order.list_orders()[-1])

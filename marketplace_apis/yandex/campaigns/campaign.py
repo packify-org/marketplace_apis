@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.campaigns.business import Business
-from marketplace_apis.yandex.campaigns.enums import PlacementType
+from marketplace_apis.yandex.common.enums import PlacementType
 
 
 @dataclass

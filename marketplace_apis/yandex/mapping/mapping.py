@@ -11,7 +11,22 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from dataclasses import dataclass
 
-"""Easy way to communicate with russian marketplaces"""
+from marketplace_apis.yandex.base import MarketApiBaseModel
 
-__version__ = "1.2.0"
+
+@dataclass
+class Mapping(MarketApiBaseModel):
+    marketModelId: int | None = None
+    """Идентификатор модели на Маркете."""
+    marketModelName: str | None = None
+    """Название модели на Маркете."""
+    marketCategoryId: int | None = None
+    """Идентификатор категории карточки на Маркете."""
+    marketCategoryName: str | None = None
+    """Название категории карточки на Маркете."""
+    marketSkuName: str | None = None
+    """Название карточки товара."""
+    marketSku: int | None = None
+    """Идентификатор карточки на Маркете."""

@@ -11,3 +11,35 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from enum import StrEnum
+
+
+class TimeUnitType(StrEnum):
+    """Единица измерения времени:"""
+
+    HOUR = "HOUR"
+    """час"""
+    DAY = "DAY"
+    """сутки"""
+    WEEK = "WEEK"
+    """неделя"""
+    MONTH = "MONTH"
+    """месяц"""
+    YEAR = "YEAR"
+    """год"""
+
+
+class AgeUnitType(StrEnum):
+    """Единицы измерения возраста"""
+
+    YEAR = "YEAR"
+    MONTH = "MONTH"
+
+
+class PlacementType(StrEnum):
+    """Модель размещения"""
+
+    FBS = "FBS"
+    FBY = "FBY"
+    DBS = "DBS"
+    EXPRESS = "EXPRESS"

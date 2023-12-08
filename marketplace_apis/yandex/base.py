@@ -38,7 +38,10 @@ class MarketApiUTC3Datetime(SerializationStrategy):
         return value.strftime(self.FORMAT)
 
     def deserialize(self, value: str) -> datetime:
-        dt = datetime.strptime(value, self.FORMAT)
+        try:
+            dt = datetime.strptime(value, self.FORMAT)
+        except ValueError:
+            dt = datetime.fromisoformat(value)
         dt.replace(tzinfo=UTC3Timezone())
         dt = dt.astimezone(UTC)
         return dt

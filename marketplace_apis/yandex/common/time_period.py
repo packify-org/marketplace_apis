@@ -11,7 +11,17 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from dataclasses import dataclass
 
-"""Easy way to communicate with russian marketplaces"""
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.common.enums import TimeUnitType
 
-__version__ = "1.2.0"
+
+@dataclass
+class TimePeriod(MarketApiBaseModel):
+    timePeriod: int
+    """Продолжительность в указанных единицах."""
+    timeUnit: TimeUnitType
+    """Единица измерения."""
+    comment: str | None = None
+    """Комментарий."""

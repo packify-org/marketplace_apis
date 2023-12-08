@@ -12,6 +12,18 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Easy way to communicate with russian marketplaces"""
+from dataclasses import dataclass
 
-__version__ = "1.2.0"
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.common.enums import PlacementType
+from marketplace_apis.yandex.offer.enums import OfferSellingProgramStatusType
+
+
+@dataclass
+class OfferSellingProgram(MarketApiBaseModel):
+    """Информация о том, по каким моделям можно продавать товар, а по каким нельзя."""
+
+    sellingProgram: PlacementType
+    """Модель размещения."""
+    status: OfferSellingProgramStatusType
+    """Информация о том, можно ли по этой модели продавать товар."""

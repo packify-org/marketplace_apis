@@ -12,6 +12,22 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Easy way to communicate with russian marketplaces"""
+from dataclasses import dataclass
 
-__version__ = "1.2.0"
+from marketplace_apis.yandex.base import MarketApiBaseModel
+
+
+@dataclass
+class OfferWeightDimensions(MarketApiBaseModel):
+    """Габариты упаковки и вес товара.
+    Если товар занимает несколько коробок, перед измерением размеров сложите их
+    компактно."""
+
+    length: float
+    """Длина упаковки в см."""
+    width: float
+    """Ширина упаковки в см."""
+    height: float
+    """Высота упаковки в см."""
+    weight: float
+    """Вес товара в кг с учетом упаковки (брутто)."""

@@ -12,6 +12,18 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Easy way to communicate with russian marketplaces"""
+from dataclasses import dataclass
 
-__version__ = "1.2.0"
+from marketplace_apis.yandex.base import MarketApiBaseModel
+
+
+@dataclass
+class OfferParam(MarketApiBaseModel):
+    name: str
+    """Название.
+
+    Должно совпадать с названием характеристики на Маркете.
+    Узнать его можно из Excel-шаблона категории или через запрос
+    ``POST category/{categoryId}/parameters.``"""
+    value: str
+    """Значение"""

@@ -12,6 +12,17 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-"""Easy way to communicate with russian marketplaces"""
+from dataclasses import dataclass
 
-__version__ = "1.2.0"
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.offer.enums import OfferCampaignStatusType
+
+
+@dataclass
+class OfferCampaignStatus(MarketApiBaseModel):
+    """Статус товара в магазине."""
+
+    campaignId: int
+    """Идентификатор кампании."""
+    status: OfferCampaignStatusType
+    """Статус товара."""

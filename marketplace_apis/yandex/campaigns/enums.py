@@ -15,14 +15,6 @@
 from enum import StrEnum
 
 
-class PlacementType(StrEnum):
-    """Модель, по которой работает магазин"""
-
-    FBS = "FBS"
-    FBY = "FBY"
-    DBS = "DBS"
-
-
 class CampaignSettingsScheduleSourceType(StrEnum):
     """Источник информации о расписании работы службы доставки."""
 

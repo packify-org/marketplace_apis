@@ -19,6 +19,9 @@ API_PATH = {
     "get_campaign_settings": "campaigns/",
     "get_campaign_by_login": "campaigns/by_login/",
     # endregion
+    # region offers
+    "list_offer_mappings": "offer-mappings",
+    # endregion
     # region warehouse
     "list_fby_warehouses": "https://api.partner.market.yandex.ru/warehouses",
     "list_warehouses": "warehouses",

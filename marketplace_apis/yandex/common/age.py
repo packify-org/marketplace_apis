@@ -11,7 +11,17 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from dataclasses import dataclass
 
-"""Easy way to communicate with russian marketplaces"""
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.common.enums import AgeUnitType
 
-__version__ = "1.2.0"
+
+@dataclass
+class Age(MarketApiBaseModel):
+    """Возраст в заданных единицах измерения."""
+
+    value: float
+    """Значение."""
+    ageUnit: AgeUnitType
+    """Единица измерения."""
