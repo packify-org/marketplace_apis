@@ -11,3 +11,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+from dataclasses import dataclass
+
+from marketplace_apis.yandex.offer.price import Price
+
+
+@dataclass
+class PriceWithDiscount(Price):
+    """Цена с указанием скидки и времени последнего обновления."""
+
+    discountBase: float | None = None
+    """Цена до скидки."""
