@@ -28,5 +28,5 @@ class PostingShipResultAdditionalData(SellerApiBaseModel):
 class PostingShipResult(SellerApiBaseModel):
     result: list[str]
     """Результат сборки отправлений."""
-    additional_data: PostingShipResultAdditionalData | None = None
+    additional_data: list[PostingShipResultAdditionalData] | None = None
     """Дополнительная информация об отправлениях."""

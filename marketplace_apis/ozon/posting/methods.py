@@ -108,7 +108,7 @@ class PostingMethods(ABCMethods):
             data={
                 "posting_number": posting_number,
                 "with": with_,
-                "packages": packages,
+                "packages": [{"products": products} for products in packages],
             },
         )
-        return ShipPostingProduct.from_dict(data)
+        return PostingShipResult.from_dict(data)
