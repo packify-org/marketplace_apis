@@ -208,6 +208,8 @@ class PostingSubstatus(StrEnum):
     """не принято на сортировочном центре"""
     SENT_BY_SELLER = "sent_by_seller"
     """отправлено продавцом"""
+    SHIP_PENDING = "ship_pending"
+    """в процессе сборки"""
 
 
 class AsyncLabelGetStatus(StrEnum):
