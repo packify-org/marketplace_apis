@@ -28,8 +28,11 @@ class SellerApi:
         api_key: str,
         client_id: str,
         limiter_transport: LimiterTransport | None = None,
+        use_limiter_transport: bool = True,
     ):
-        self.requester = SellerApiRequester(api_key, client_id, limiter_transport)
+        self.requester = SellerApiRequester(
+            api_key, client_id, limiter_transport, use_limiter_transport
+        )
         self.posting = PostingMethods(self.requester)
         self.product = ProductMethods(self.requester)
         self.warehouse = WarehouseMethods(self.requester)

@@ -30,9 +30,10 @@ class MarketApi:
         campaign_id: str | None = None,
         business_id: str | None = None,
         limiter_transport: LimiterTransport | None = None,
+        use_limiter_transport: bool = True,
     ):
         self.requester = MarketApiRequester(
-            token, campaign_id, business_id, limiter_transport
+            token, campaign_id, business_id, limiter_transport, use_limiter_transport
         )
 
         self.order = OrderMethods(self.requester)
