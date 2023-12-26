@@ -18,7 +18,7 @@ from marketplace_apis.common.utils import dict_datetime_to_iso
 from marketplace_apis.yandex.base import UTC3Timezone
 from marketplace_apis.yandex.endpoints import API_PATH
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
-from marketplace_apis.yandex.order.methods_types import ListOrders
+from marketplace_apis.yandex.order.methods_types import ListOrders, PageFormatType
 from marketplace_apis.yandex.order.order import Order
 
 
@@ -71,3 +71,18 @@ class OrderMethods(ABCMethods):
     #         data={"posting_number": posting_number, "with": with_},
     #     )
     #     return Posting.from_dict(data["result"])
+
+    def get_label(self, order_id: int, format_: PageFormatType | None = None) -> bytes:
+        """Get all labels for order in specified format.
+        :param order_id: order id.
+        :param format_: pdf file format. Defaults to A6
+
+        :return: PDF-file with all labels"""
+        _, data = self._requester.get(
+            self._requester.build_campaign_url(
+                f"orders/{order_id}/{API_PATH["get_delivery_labels"]}"
+            ),
+            decode=False,
+            params={"format": format_},
+        )
+        return data

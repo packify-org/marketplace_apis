@@ -12,6 +12,7 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from datetime import datetime, date
+from enum import StrEnum
 from typing import TypedDict, NotRequired
 
 from marketplace_apis.yandex.order.enums import (
@@ -72,3 +73,12 @@ class ListOrders(TypedDict):
 
     * ``true`` — возвращаются только заказы с неподтвержденной датой доставки.
     * ``false`` — фильтрация не применяется."""
+
+
+class PageFormatType(StrEnum):
+    """Параметр управляет размещением ярлыков на странице"""
+
+    A7 = "A7"
+    """в PDF-файле будут странички размером A7, на каждой из которых разместится один ярлык"""
+    A4 = "A4"
+    """PDF-файл будет состоять из страниц A4, на каждой из которых будет по восемь ярлыков."""

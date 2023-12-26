@@ -57,7 +57,7 @@ if __name__ == "__main__":
     )
     # print(api.warehouse.list_fby_warehouses())
     # print(api.warehouse.list_warehouses())
-    # print(api.order.list_orders()[-1])
+    # print(api.order.list_orders(status=OrderStatusType.PROCESSING)[-1])
     # print(MarketApi.oauth.get_tokens_by_code(
     #     os.getenv("CLIENT_ID"),
     #     os.getenv("CLIENT_SECRET"), 8863298
