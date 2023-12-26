@@ -18,6 +18,7 @@ from marketplace_apis.common.utils import dict_datetime_to_iso
 from marketplace_apis.yandex.base import UTC3Timezone
 from marketplace_apis.yandex.endpoints import API_PATH
 from marketplace_apis.yandex.market_api_requester import MarketApiRequester
+from marketplace_apis.yandex.order.enums import OrderSubstatusType, OrderStatusType
 from marketplace_apis.yandex.order.methods_types import ListOrders, PageFormatType
 from marketplace_apis.yandex.order.order import Order
 
@@ -86,3 +87,33 @@ class OrderMethods(ABCMethods):
             params={"format": format_},
         )
         return data
+
+    def update_status(
+        self,
+        order_id: int,
+        status: OrderStatusType,
+        substatus: OrderSubstatusType | None = None,
+    ) -> Order:
+        """Update status of order.
+        :param order_id: order id.
+        :param status: new status
+        :param substatus: new substatus
+
+        :return: updated order"""
+        order_status_data = {"status": status}
+        if substatus:
+            order_status_data["substatus"] = substatus
+        _, data = self._requester.put(
+            self._requester.build_campaign_url(
+                f"orders/{order_id}/{API_PATH["order_status"]}"
+            ),
+            data={"order": order_status_data},
+        )
+        return Order.from_dict(data)
+
+    def ship(self, order_id: int) -> Order:
+        return self.update_status(
+            order_id,
+            status=OrderStatusType.PROCESSING,
+            substatus=OrderSubstatusType.READY_TO_SHIP,
+        )

@@ -30,6 +30,7 @@ API_PATH = {
     "list_orders": "orders",
     "get_order_by_number": "orders",
     "get_delivery_labels": "delivery/labels",
+    "order_status": "status",
     # endregion
     # region oauth
     "oauth_token": "https://oauth.yandex.ru/token",
