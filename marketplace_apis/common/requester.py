@@ -108,6 +108,34 @@ class Requester:
                 decoded = response.json()
         return response, decoded
 
+    @_check_for_errors_decorator
+    def put(
+        self,
+        path: str,
+        data: dict | None = None,
+        params: dict[str, str] | None = None,
+        decode: bool = True,
+    ) -> tuple[httpx.Response, dict | bytes]:
+        """
+        Make put request to some path with url params
+        :param path: url where make request to
+        :param data: put body
+        :param params: url params as dict what would be used to make request
+        :param decode: whenever to decode response as json
+        :return: Response object, dict with decoded content or None
+        :rtype: tuple[Response, dict | bytes]
+        """
+        if data is None:
+            data = {}
+        if params is None:
+            params = {}
+        response = self.client.put(path, json=data, params=params)
+        decoded = response.content
+        if decode:
+            with contextlib.suppress(JSONDecodeError):
+                decoded = response.json()
+        return response, decoded
+
 
 if __name__ == "__main__":
     from pathlib import Path
