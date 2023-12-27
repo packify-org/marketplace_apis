@@ -109,7 +109,7 @@ class OrderMethods(ABCMethods):
             ),
             data={"order": order_status_data},
         )
-        return Order.from_dict(data)
+        return Order.from_dict(data["order"])
 
     def ship(self, order_id: int) -> Order:
         return self.update_status(
