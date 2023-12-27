@@ -28,8 +28,6 @@ class OrderDeliveryAddress(MarketApiBaseModel):
     """Город или населенный пункт."""
     house: str
     """Дом или владение."""
-    gps: Gps
-    """GPS-координаты."""
     district: str | None = None
     """Район."""
     postcode: str | None = None
@@ -54,3 +52,5 @@ class OrderDeliveryAddress(MarketApiBaseModel):
     """Квартира или офис."""
     street: str | None = None
     """Улица."""
+    gps: Gps | None = None
+    """GPS-координаты."""
