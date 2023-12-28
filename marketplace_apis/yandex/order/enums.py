@@ -195,6 +195,7 @@ class OrderSubstatusType(StrEnum):
     CUSTOMS_PROBLEMS = "CUSTOMS_PROBLEMS"
     AWAIT_CASHIER = "AWAIT_CASHIER"
     UNKNOWN = "UNKNOWN"
+    SHIP_IN_PROCESS = "ship_in_process"
 
 
 class OrderPaymentType(StrEnum):
