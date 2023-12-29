@@ -27,5 +27,6 @@ API_PATH = {
     # endregion
     # region products
     "list_product_info": "v2/product/info/list",
+    "list_product_attributes": "v3/products/info/attributes",
     # endregion
 }

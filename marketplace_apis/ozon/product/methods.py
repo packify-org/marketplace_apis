@@ -11,10 +11,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from typing import Unpack
 
 from marketplace_apis.common.base import ABCMethods
 from marketplace_apis.common.requester import Requester
 from marketplace_apis.ozon.endpoints import API_PATH
+from marketplace_apis.ozon.product.methods_types import ListAttributesFilter
 from marketplace_apis.ozon.product.product import Product
 
 
@@ -28,7 +30,7 @@ class ProductMethods(ABCMethods):
         product_id: list[int] | None = None,
         sku: list[int] | None = None,
     ) -> list[Product]:
-        """List postings.
+        """List product infos.
         :param offer_id: list of offer_id
         :param product_id: list of product_id
         :param sku: list of sku
@@ -46,3 +48,41 @@ class ProductMethods(ABCMethods):
         return [
             Product.from_dict(raw_product) for raw_product in data["result"]["items"]
         ]
+
+    def list_attributes(
+        self,
+        iter_: bool = True,
+        limit: int = 1000,
+        dir_="DESC",
+        **kwargs: Unpack[ListAttributesFilter],
+    ) -> Product:
+        """List product attributes.
+        :param limit: Maximum amount of Product attributes what will be retrieved in one
+        request
+        :param iter_: Whenever to get all postings by making multiple requests or not
+        :param dir_: Direction of sorting - ``DESC`` or ``ASC``
+
+        :return: List of product attributes
+        """
+
+        raw_products = []
+
+        def make_request(last_id=None):
+            resp, decoded_resp = self._requester.post(
+                API_PATH["list_product_attributes"],
+                data={
+                    "limit": limit,
+                    "sort_dir": dir_,
+                    "filter": kwargs,
+                }
+                | ({"last_id": last_id} if last_id else {}),
+            )
+            nonlocal raw_products
+            raw_products += decoded_resp["result"]
+            return resp, decoded_resp
+
+        _, data = make_request()
+        while iter_ and data["last_id"]:
+            _, data = make_request(data["last_id"])
+
+        return [Product.from_dict(raw_product) for raw_product in raw_products]

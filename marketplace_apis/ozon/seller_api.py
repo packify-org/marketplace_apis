@@ -49,4 +49,7 @@ if __name__ == "__main__":
                 os.environ[k] = v.strip()
 
     api = SellerApi(os.getenv("API_KEY"), os.getenv("CLIENT_ID"))
-    print(api.posting.label_task_get(39116928))  # noqa: T201
+    # print(api.posting.label_task_get(39116928))
+    # [print([attribute.values[0].value for attribute in product.attributes if
+    #         attribute.attribute_id == 4191]) for product in
+    #  api.product.list_attribute()]

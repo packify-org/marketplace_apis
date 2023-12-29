@@ -11,3 +11,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from typing import TypedDict, NotRequired
+
+from marketplace_apis.ozon.product.enums import Visibility
+
+
+class ListAttributesFilter(TypedDict):
+    offer_id: NotRequired[list[int]]
+    """Фильтр по параметру offer_id. Можно передавать список значений."""
+    product_id: NotRequired[list[int]]
+    """Фильтр по параметру product_id. Можно передавать список значений."""
+    visibility: NotRequired[Visibility]
+    """Фильтр по видимости товара"""
