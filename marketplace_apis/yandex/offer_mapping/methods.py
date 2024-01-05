@@ -42,7 +42,10 @@ class OfferMappingMethods(ABCMethods):
         def make_request():
             resp, decoded_resp = self._requester.post(
                 self._requester.build_business_url(API_PATH["list_offer_mappings"]),
-                params={"limit": limit, "page_token": page_token},
+                params={
+                    "limit": limit if not kwargs else None,
+                    "page_token": page_token,
+                },
                 data=kwargs,
             )
             nonlocal raw_offer_mappings
