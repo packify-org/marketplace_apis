@@ -15,7 +15,7 @@
 from mashumaro import DataClassDictMixin
 from mashumaro.config import BaseConfig
 
-from marketplace_apis.common.requester import Requester
+from marketplace_apis.common.requester import AsyncRequester
 
 
 class BaseModel(DataClassDictMixin):
@@ -25,5 +25,5 @@ class BaseModel(DataClassDictMixin):
 
 
 class ABCMethods:
-    def __init__(self, requester: Requester):
-        self._requester = requester
+    def __init__(self, client: AsyncRequester):
+        self.client = client

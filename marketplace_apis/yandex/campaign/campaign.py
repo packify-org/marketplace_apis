@@ -11,23 +11,25 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from typing import TYPE_CHECKING
-
-from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
-from marketplace_apis.ozon.endpoints import API_PATH
-from marketplace_apis.ozon.warehouse.warehouse import Warehouse
-
-if TYPE_CHECKING:
-    pass
+from dataclasses import dataclass
 
 
-class WarehouseMethods(SellerApiABCMethods):
-    async def list_warehouses(
-        self,
-    ) -> list[Warehouse]:
-        """List warehouses.
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.campaign.business import Business
+from marketplace_apis.yandex.common.enums import PlacementType
 
-        :return: List of warehouses
-        """
-        _, data = await self.client.post(API_PATH["list_warehouses"])
-        return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]
+
+@dataclass
+class Campaign(MarketApiBaseModel):
+    """Информация о магазине."""
+
+    domain: str
+    """URL магазина."""
+    clientId: int
+    """Идентификатор плательщика в Яндекс Балансе."""
+    business: Business
+    """Информацию о кабинете."""
+    placementType: PlacementType
+    """Модель, по которой работает магазин"""
+    id_: int
+    """Идентификатор кампании."""

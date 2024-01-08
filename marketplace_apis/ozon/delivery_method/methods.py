@@ -13,8 +13,7 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from typing import Unpack
 
-from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
+from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
 from marketplace_apis.ozon.delivery_method.delivery_method import DeliveryMethod
 from marketplace_apis.ozon.delivery_method.methods_types import (
     ListDeliveryMethodsFilter,
@@ -23,11 +22,8 @@ from marketplace_apis.ozon.endpoints import API_PATH
 from marketplace_apis.ozon.utils import kwargs_to_filters
 
 
-class DeliveryMethodMethods(ABCMethods):
-    def __init__(self, requester: Requester):
-        super().__init__(requester)
-
-    def list_delivery_methods(
+class DeliveryMethodMethods(SellerApiABCMethods):
+    async def list_delivery_methods(
         self,
         iter_: bool = True,
         limit: int = 1000,
@@ -46,8 +42,8 @@ class DeliveryMethodMethods(ABCMethods):
         raw_delivery_methods = []
         filter_, _ = kwargs_to_filters(kwargs)
 
-        def make_request():
-            resp, decoded_resp = self._requester.post(
+        async def make_request():
+            resp, decoded_resp = await self.client.post(
                 API_PATH["list_delivery_methods"],
                 data={
                     "limit": limit,
@@ -59,10 +55,10 @@ class DeliveryMethodMethods(ABCMethods):
             raw_delivery_methods += decoded_resp["result"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and data["has_next"]:
             offset += limit
-            _, data = make_request()
+            _, data = await make_request()
 
         return [
             DeliveryMethod.from_dict(raw_delivery_method)

@@ -1,5 +1,5 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#  Copyright (C) 2023  Anatoly Raev
+#  Copyright (C) 2024  Anatoly Raev
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -11,23 +11,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from typing import TYPE_CHECKING
+import pytest
 
-from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
-from marketplace_apis.ozon.endpoints import API_PATH
-from marketplace_apis.ozon.warehouse.warehouse import Warehouse
-
-if TYPE_CHECKING:
-    pass
+from marketplace_apis.yandex.warehouse.warehouses import Warehouses
 
 
-class WarehouseMethods(SellerApiABCMethods):
-    async def list_warehouses(
-        self,
-    ) -> list[Warehouse]:
-        """List warehouses.
+@pytest.mark.asyncio
+class TestWarehouse:
+    async def test_list_fby_warehouses(self, market_api):
+        async with market_api as client:
+            warehouses = await client.warehouse.list_fby_warehouses()
+            assert isinstance(warehouses, Warehouses)
 
-        :return: List of warehouses
-        """
-        _, data = await self.client.post(API_PATH["list_warehouses"])
-        return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]
+    async def test_list_warehouses(self, market_api):
+        async with market_api as client:
+            warehouses = await client.warehouse.list_warehouses()
+            assert isinstance(warehouses, Warehouses)

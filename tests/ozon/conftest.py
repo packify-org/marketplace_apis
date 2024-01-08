@@ -1,5 +1,5 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#  Copyright (C) 2023  Anatoly Raev
+#  Copyright (C) 2024  Anatoly Raev
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -11,16 +11,29 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+from pathlib import Path
 
-from dataclasses import dataclass
+import pytest
 
-from marketplace_apis.yandex.base import MarketApiBaseModel
-from marketplace_apis.yandex.campaigns.settings_schedule import CampaignSettingsSchedule
+from marketplace_apis.ozon.seller_api import SellerApi
 
 
-@dataclass
-class CampaignSettingsDelivery(MarketApiBaseModel):
-    """Информация о доставке в своем регионе магазина."""
+@pytest.fixture(scope="module")
+def auth_data() -> list[str, str]:
+    data = {}
+    with Path.open(".env", "r") as f:
+        for line in f.readlines():
+            if line:
+                k, v = line.split("=")
+                data[k] = v.strip("\n")
+    return data["API_KEY"], data["CLIENT_ID"]
 
-    schedule: CampaignSettingsSchedule
-    """Расписание работы службы доставки в своем регионе."""
+
+@pytest.fixture(scope="module")
+def seller_api(auth_data) -> SellerApi:
+    return SellerApi(*auth_data)
+
+
+class ValueStorage:
+    postings = None
+    product = None

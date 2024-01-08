@@ -1,5 +1,5 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#  Copyright (C) 2023  Anatoly Raev
+#  Copyright (C) 2024  Anatoly Raev
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -13,21 +13,12 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from typing import TYPE_CHECKING
 
-from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
-from marketplace_apis.ozon.endpoints import API_PATH
-from marketplace_apis.ozon.warehouse.warehouse import Warehouse
+from marketplace_apis.common.base import ABCMethods
 
 if TYPE_CHECKING:
-    pass
+    from marketplace_apis.yandex.market_api import MarketApi
 
 
-class WarehouseMethods(SellerApiABCMethods):
-    async def list_warehouses(
-        self,
-    ) -> list[Warehouse]:
-        """List warehouses.
-
-        :return: List of warehouses
-        """
-        _, data = await self.client.post(API_PATH["list_warehouses"])
-        return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]
+class MarketApiABCMethods(ABCMethods):
+    def __init__(self, client: "MarketApi"):
+        super().__init__(client)

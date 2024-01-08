@@ -48,7 +48,7 @@ class OAuthMethods:
         https://yandex.ru/dev/market/partner-api/doc/ru/concepts/how-to-use-refresh-token#get-tokens
         :param client_id: app client id
         :param client_secret: app client secret
-        :param code: code, that you got after auth
+        :param code: code, that you got after _auth
         :return: dict with access_token, expires_in, token_type and refresh_token keys
         """
         return OAuthMethods._get_tokens(

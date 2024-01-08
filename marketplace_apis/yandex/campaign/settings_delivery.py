@@ -14,16 +14,13 @@
 
 from dataclasses import dataclass
 
-from marketplace_apis.yandex.campaigns.enums import CampaignSettingsScheduleSourceType
-from marketplace_apis.yandex.campaigns.settings_delivery import CampaignSettingsDelivery
-from marketplace_apis.yandex.common.region import Region
+from marketplace_apis.yandex.base import MarketApiBaseModel
+from marketplace_apis.yandex.campaign.settings_schedule import CampaignSettingsSchedule
 
 
 @dataclass
-class CampaignSettingsLocalRegion(Region):
-    """Информация о своем регионе магазина."""
-
-    deliveryOptionsSource: CampaignSettingsScheduleSourceType
-    """Источник информации о расписании работы службы доставки."""
-    delivery: CampaignSettingsDelivery
+class CampaignSettingsDelivery(MarketApiBaseModel):
     """Информация о доставке в своем регионе магазина."""
+
+    schedule: CampaignSettingsSchedule
+    """Расписание работы службы доставки в своем регионе."""

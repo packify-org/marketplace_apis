@@ -14,7 +14,7 @@
 from dataclasses import dataclass
 
 from marketplace_apis.yandex.base import MarketApiBaseModel
-from marketplace_apis.yandex.campaigns.settings_local_region import (
+from marketplace_apis.yandex.campaign.settings_local_region import (
     CampaignSettingsLocalRegion,
 )
 

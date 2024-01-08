@@ -13,18 +13,14 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from typing import Unpack
 
-from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
+from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
 from marketplace_apis.ozon.endpoints import API_PATH
 from marketplace_apis.ozon.product.methods_types import ListAttributesFilter
 from marketplace_apis.ozon.product.product import Product
 
 
-class ProductMethods(ABCMethods):
-    def __init__(self, requester: Requester):
-        super().__init__(requester)
-
-    def list_info(
+class ProductMethods(SellerApiABCMethods):
+    async def list_info(
         self,
         offer_id: list[str] | None = None,
         product_id: list[int] | None = None,
@@ -37,7 +33,7 @@ class ProductMethods(ABCMethods):
 
         :return: List of Products
         """
-        _, data = self._requester.post(
+        _, data = await self.client.post(
             API_PATH["list_product_info"],
             data={
                 "offer_id": offer_id,
@@ -49,13 +45,13 @@ class ProductMethods(ABCMethods):
             Product.from_dict(raw_product) for raw_product in data["result"]["items"]
         ]
 
-    def list_attributes(
+    async def list_attributes(
         self,
         iter_: bool = True,
         limit: int = 1000,
         dir_="DESC",
         **kwargs: Unpack[ListAttributesFilter],
-    ) -> Product:
+    ) -> list[Product]:
         """List product attributes.
         :param limit: Maximum amount of Product attributes what will be retrieved in one
         request
@@ -67,8 +63,8 @@ class ProductMethods(ABCMethods):
 
         raw_products = []
 
-        def make_request(last_id=None):
-            resp, decoded_resp = self._requester.post(
+        async def make_request(last_id=None):
+            resp, decoded_resp = await self.client.post(
                 API_PATH["list_product_attributes"],
                 data={
                     "limit": limit,
@@ -81,8 +77,8 @@ class ProductMethods(ABCMethods):
             raw_products += decoded_resp["result"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and data["last_id"]:
-            _, data = make_request(data["last_id"])
+            _, data = await make_request(data["last_id"])
 
         return [Product.from_dict(raw_product) for raw_product in raw_products]

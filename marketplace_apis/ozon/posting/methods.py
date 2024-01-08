@@ -13,9 +13,8 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from typing import Unpack
 
-from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
 from marketplace_apis.common.utils import dict_datetime_to_iso
+from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
 from marketplace_apis.ozon.endpoints import API_PATH
 from marketplace_apis.ozon.posting.label import AsyncLabelGetResult
 from marketplace_apis.ozon.posting.methods_types import (
@@ -29,11 +28,8 @@ from marketplace_apis.ozon.posting.ship import PostingShipResult
 from marketplace_apis.ozon.utils import kwargs_to_filters
 
 
-class PostingMethods(ABCMethods):
-    def __init__(self, requester: Requester):
-        super().__init__(requester)
-
-    def list_postings(
+class PostingMethods(SellerApiABCMethods):
+    async def list_postings(
         self,
         dir_: str = "desc",
         iter_: bool = True,
@@ -54,8 +50,8 @@ class PostingMethods(ABCMethods):
         raw_postings = []
         filter_, with_ = kwargs_to_filters(kwargs)
 
-        def make_request():
-            resp, decoded_resp = self._requester.post(
+        async def make_request():
+            resp, decoded_resp = await self.client.post(
                 API_PATH["list_postings"],
                 data={
                     "limit": limit,
@@ -69,41 +65,43 @@ class PostingMethods(ABCMethods):
             raw_postings += decoded_resp["result"]["postings"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and data["result"]["has_next"]:
             offset += limit
-            _, data = make_request()
+            _, data = await make_request()
 
         return [Posting.from_dict(raw_posting) for raw_posting in raw_postings]
 
-    def get_by_number(self, posting_number: str, **kwargs: Unpack[GetPostingsWith]):
+    async def get_by_number(
+        self, posting_number: str, **kwargs: Unpack[GetPostingsWith]
+    ):
         _, with_ = kwargs_to_filters(kwargs)
-        _, data = self._requester.post(
+        _, data = await self.client.post(
             API_PATH["get_posting_by_number"],
             data={"posting_number": posting_number, "with": with_},
         )
         return Posting.from_dict(data["result"])
 
-    def label_task_create(self, posting_numbers: list[str]) -> int:
-        _, data = self._requester.post(
+    async def label_task_create(self, posting_numbers: list[str]) -> int:
+        _, data = await self.client.post(
             API_PATH["package_label_create"], data={"posting_number": posting_numbers}
         )
         return data["result"]["task_id"]
 
-    def label_task_get(self, task_id: int) -> AsyncLabelGetResult:
-        _, data = self._requester.post(
+    async def label_task_get(self, task_id: int) -> AsyncLabelGetResult:
+        _, data = await self.client.post(
             API_PATH["package_label_get"], data={"task_id": task_id}
         )
         return AsyncLabelGetResult.from_dict(data["result"])
 
-    def ship(
+    async def ship(
         self,
         posting_number,
         packages: list[list[ShipPostingProduct]],
         **kwargs: Unpack[ShipPostingWith],
     ) -> PostingShipResult:
         _, with_ = kwargs_to_filters(kwargs)
-        _, data = self._requester.post(
+        _, data = await self.client.post(
             API_PATH["ship_posting"],
             data={
                 "posting_number": posting_number,

@@ -11,23 +11,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from typing import TYPE_CHECKING
 
-from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
-from marketplace_apis.ozon.endpoints import API_PATH
-from marketplace_apis.ozon.warehouse.warehouse import Warehouse
+from dataclasses import dataclass
 
-if TYPE_CHECKING:
-    pass
+from marketplace_apis.yandex.campaign.enums import CampaignSettingsScheduleSourceType
+from marketplace_apis.yandex.campaign.settings_delivery import CampaignSettingsDelivery
+from marketplace_apis.yandex.common.region import Region
 
 
-class WarehouseMethods(SellerApiABCMethods):
-    async def list_warehouses(
-        self,
-    ) -> list[Warehouse]:
-        """List warehouses.
+@dataclass
+class CampaignSettingsLocalRegion(Region):
+    """Информация о своем регионе магазина."""
 
-        :return: List of warehouses
-        """
-        _, data = await self.client.post(API_PATH["list_warehouses"])
-        return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]
+    deliveryOptionsSource: CampaignSettingsScheduleSourceType
+    """Источник информации о расписании работы службы доставки."""
+    delivery: CampaignSettingsDelivery
+    """Информация о доставке в своем регионе магазина."""

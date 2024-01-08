@@ -13,18 +13,15 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from urllib.parse import urljoin
 
-from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
-from marketplace_apis.yandex.campaigns.campaign import Campaign
-from marketplace_apis.yandex.campaigns.settings import CampaignSettings
+from marketplace_apis.yandex.campaign.campaign import Campaign
+from marketplace_apis.yandex.campaign.settings import CampaignSettings
+
+from marketplace_apis.yandex.common.abc_methods import MarketApiABCMethods
 from marketplace_apis.yandex.endpoints import API_PATH
 
 
-class CampaignMethods(ABCMethods):
-    def __init__(self, requester: Requester):
-        super().__init__(requester)
-
-    def list_campaigns(
+class CampaignMethods(MarketApiABCMethods):
+    async def list_campaigns(
         self,
         iter_: bool = True,
         page_size: int = 50,
@@ -40,47 +37,46 @@ class CampaignMethods(ABCMethods):
         """
         raw_campaigns = []
 
-        def make_request():
-            resp, decoded_resp = self._requester.get(
-                API_PATH["list_campaigns"],
-                params={"pageSize": page_size, "page": page},
+        async def make_request():
+            resp, decoded_resp = await self.client.get(
+                API_PATH["list_campaigns"], params={"pageSize": page_size, "page": page}
             )
             nonlocal raw_campaigns
             raw_campaigns += decoded_resp["campaigns"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and data["pager"]["pagesCount"] != data["pager"]["currentPage"]:
             page += 1
-            _, data = make_request()
+            _, data = await make_request()
 
         return [Campaign.from_dict(raw_campaign) for raw_campaign in raw_campaigns]
 
-    def get_by_id(self, campaign_id: int) -> Campaign:
-        _, data = self._requester.get(
+    async def get_by_id(self, campaign_id: int) -> Campaign:
+        _, data = await self.client.get(
             urljoin(API_PATH["get_campaign_by_id"], str(campaign_id))
         )
         return Campaign.from_dict(data["campaign"])
 
-    def get_settings(self, campaign_id: int) -> Campaign:
-        _, data = self._requester.get(
+    async def get_settings(self, campaign_id: int) -> Campaign:
+        _, data = await self.client.get(
             urljoin(API_PATH["get_campaign_settings"], f"{campaign_id}/settings")
         )
         return CampaignSettings.from_dict(data["settings"])
 
-    def get_logins(self, campaign_id: int) -> list[str]:
-        _, data = self._requester.get(
+    async def get_logins(self, campaign_id: int) -> list[str]:
+        _, data = await self.client.get(
             urljoin(API_PATH["get_campaign_logins"], f"{campaign_id}/logins")
         )
-        return data
+        return data["logins"]
 
-    def get_by_login(
+    async def get_by_login(
         self, login: str, iter_: bool = True, page_size: int = 50, page: int = 1
     ) -> list[str]:
         raw_campaigns = []
 
-        def make_request():
-            resp, decoded_resp = self._requester.get(
+        async def make_request():
+            resp, decoded_resp = await self.client.get(
                 urljoin(API_PATH["get_campaign_by_login"], f"{login}"),
                 params={"pageSize": page, "page": page_size},
             )
@@ -88,9 +84,9 @@ class CampaignMethods(ABCMethods):
             raw_campaigns += decoded_resp["campaigns"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and data["pager"]["pagesCount"] != data["pager"]["currentPage"]:
             page += 1
-            _, data = make_request()
+            _, data = await make_request()
 
         return [Campaign.from_dict(raw_campaign) for raw_campaign in raw_campaigns]

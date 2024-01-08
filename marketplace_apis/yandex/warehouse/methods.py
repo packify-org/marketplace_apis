@@ -12,28 +12,24 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-from marketplace_apis.common.base import ABCMethods
+from marketplace_apis.yandex.common.abc_methods import MarketApiABCMethods
 from marketplace_apis.yandex.endpoints import API_PATH
-from marketplace_apis.yandex.market_api_requester import MarketApiRequester
 from marketplace_apis.yandex.warehouse.warehouses import Warehouses
 
 
-class WarehouseMethods(ABCMethods):
-    def __init__(self, requester: MarketApiRequester):
-        super().__init__(requester)
-
-    def list_fby_warehouses(self) -> Warehouses:
+class WarehouseMethods(MarketApiABCMethods):
+    async def list_fby_warehouses(self) -> Warehouses:
         """List all market FBY warehouses.
         :return: Warehouses object
         """
-        _, data = self._requester.get(API_PATH["list_fby_warehouses"])
+        _, data = await self.client.get(API_PATH["list_fby_warehouses"])
         return Warehouses.from_dict(data["result"])
 
-    def list_warehouses(self) -> Warehouses:
+    async def list_warehouses(self) -> Warehouses:
         """List all warehouses.
         :return: Warehouses object
         """
-        _, data = self._requester.get(
-            self._requester.build_business_url(API_PATH["list_warehouses"])
+        _, data = await self.client.get(
+            self.client.build_business_url(API_PATH["list_warehouses"])
         )
         return Warehouses.from_dict(data["result"])

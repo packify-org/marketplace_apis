@@ -13,18 +13,14 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 from typing import Unpack
 
-from marketplace_apis.common.base import ABCMethods
-from marketplace_apis.common.requester import Requester
+from marketplace_apis.yandex.common.abc_methods import MarketApiABCMethods
 from marketplace_apis.yandex.endpoints import API_PATH
 from marketplace_apis.yandex.offer_mapping.method_types import ListOfferMappings
 from marketplace_apis.yandex.offer_mapping.offer_mapping import OfferMapping
 
 
-class OfferMappingMethods(ABCMethods):
-    def __init__(self, requester: Requester):
-        super().__init__(requester)
-
-    def list_offer_mappings(
+class OfferMappingMethods(MarketApiABCMethods):
+    async def list_offer_mappings(
         self, limit: int = 50, iter_: bool = True, **kwargs: Unpack[ListOfferMappings]
     ) -> list[OfferMapping]:
         """List offer mappings.
@@ -39,23 +35,23 @@ class OfferMappingMethods(ABCMethods):
 
         page_token = None
 
-        def make_request():
-            resp, decoded_resp = self._requester.post(
-                self._requester.build_business_url(API_PATH["list_offer_mappings"]),
+        async def make_request():
+            resp, decoded_resp = await self.client.post(
+                self.client.build_business_url(API_PATH["list_offer_mappings"]),
+                data=kwargs,
                 params={
                     "limit": limit if not kwargs else None,
                     "page_token": page_token,
                 },
-                data=kwargs,
             )
             nonlocal raw_offer_mappings
             raw_offer_mappings += decoded_resp["result"]["offerMappings"]
             return resp, decoded_resp
 
-        _, data = make_request()
+        _, data = await make_request()
         while iter_ and "nextPageToken" in data["result"]["paging"]:
             page_token = data["result"]["paging"]["nextPageToken"]
-            _, data = make_request()
+            _, data = await make_request()
 
         return [
             OfferMapping.from_dict(raw_offer_mapping)

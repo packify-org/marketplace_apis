@@ -17,7 +17,7 @@ from datetime import date
 
 from marketplace_apis.common.enums import Day
 from marketplace_apis.yandex.base import MarketApiBaseModel
-from marketplace_apis.yandex.campaigns.settings_time_period import (
+from marketplace_apis.yandex.campaign.settings_time_period import (
     CampaignSettingsTimePeriod,
 )
 

@@ -1,5 +1,5 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#  Copyright (C) 2023  Anatoly Raev
+#  Copyright (C) 2024  Anatoly Raev
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
@@ -11,23 +11,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-from typing import TYPE_CHECKING
+from pathlib import Path
 
-from marketplace_apis.ozon.common.abc_methods import SellerApiABCMethods
-from marketplace_apis.ozon.endpoints import API_PATH
-from marketplace_apis.ozon.warehouse.warehouse import Warehouse
+import pytest
 
-if TYPE_CHECKING:
-    pass
+from marketplace_apis.yandex.market_api import MarketApi
 
 
-class WarehouseMethods(SellerApiABCMethods):
-    async def list_warehouses(
-        self,
-    ) -> list[Warehouse]:
-        """List warehouses.
+@pytest.fixture(scope="module")
+def auth_data() -> list[str, str, str]:
+    data = {}
+    with Path.open(".env", "r") as f:
+        for line in f.readlines():
+            if line:
+                k, v = line.split("=")
+                data[k] = v.strip("\n")
+    return data["TOKEN"], data["CAMPAIGN_ID"], data["BUSINESS_ID"]
 
-        :return: List of warehouses
-        """
-        _, data = await self.client.post(API_PATH["list_warehouses"])
-        return [Warehouse.from_dict(raw_warehouse) for raw_warehouse in data["result"]]
+
+@pytest.fixture(scope="module")
+def market_api(auth_data) -> MarketApi:
+    return MarketApi(*auth_data)
+
+
+class ValueStorage:
+    campaigns = None
+    campaign = None
+    campaign_logins = None
