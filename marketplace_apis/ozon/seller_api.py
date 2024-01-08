@@ -45,7 +45,7 @@ class SellerApi(AsyncRequester):
     async def check_for_errors(func, self, *args, **kwargs):
         response_, data = await func(self, *args, **kwargs)
         if response_.status_code != HTTPStatus.OK:
-            raise SellerApiError(response_.json())
+            raise SellerApiError(response_.status_code, response_.json())
         return response_, data
 
     def __init__(
@@ -66,9 +66,10 @@ class SellerApi(AsyncRequester):
 
 if __name__ == "__main__":
     from pathlib import Path
-    import time
     import os
+    import asyncio
     from datetime import datetime, timedelta
+    from marketplace_apis.ozon.seller_api import SellerApi
 
     with Path.open(".env", "r") as f:
         for line in f.readlines():
@@ -76,21 +77,22 @@ if __name__ == "__main__":
                 k, v = line.split("=")
                 os.environ[k] = v.strip()
 
-    async def async_function():
-        start_time = datetime.now()
-        start_time_count = time.monotonic()
-        async with (os.getenv("API_KEY"), os.getenv("CLIENT_ID")) as client:
-            print(  # noqa: T201
-                await client.posting.list_postings(
-                    filter_since=start_time - timedelta(14),
-                    filter_to=start_time + timedelta(14),
-                )
+    async def main():
+        async with SellerApi(os.getenv("API_KEY"), os.getenv("CLIENT_ID")) as client:
+            # print all postings from 14 days before now to now:
+            now = datetime.now()
+            postings = await client.posting.list_postings(
+                filter_since=now - timedelta(14), filter_to=now
             )
-        end_time = time.monotonic()
-        print(timedelta(seconds=end_time - start_time_count))  # noqa: T201
+            print(postings)
+            # get product infos and attributes from first posting products concurrently
+            async with asyncio.TaskGroup() as tg:
+                posting = postings[0]
+                offer_ids = [product.offer_id for product in posting.products]
+                info = tg.create_task(client.product.list_info(["112026854"]))
+                attributes = tg.create_task(
+                    client.product.list_attributes(offer_id=["112026854"])
+                )
+            print(info.result(), attributes.result())
 
-    asyncio.run(async_function())
-    # print(api.posting.label_task_get(45342209))
-    # [print([attribute.values[0].value for attribute in product.attributes if
-    #         attribute.attribute_id == 4191]) for product in
-    #  api.product.list_attribute()]
+    asyncio.run(main())

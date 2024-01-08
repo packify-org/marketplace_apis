@@ -23,8 +23,6 @@ from marketplace_apis.yandex.oauth.methods import OAuthMethods
 
 from marketplace_apis.yandex.offer_mapping.methods import OfferMappingMethods
 from marketplace_apis.yandex.order.methods import OrderMethods
-
-# from marketplace_apis.yandex.order.methods import OrderMethods
 from marketplace_apis.yandex.warehouse.methods import WarehouseMethods
 
 
@@ -48,7 +46,7 @@ class MarketApi(AsyncRequester):
     async def check_for_errors(func, self, *args, **kwargs):
         response_, data = await func(self, *args, **kwargs)
         if response_.status_code != HTTPStatus.OK:
-            raise MarketApiError(response_.json())
+            raise MarketApiError(response_.status_code, response_.json())
         return response_, data
 
     def build_campaign_url(self, endpoint):
@@ -86,8 +84,7 @@ class MarketApi(AsyncRequester):
 if __name__ == "__main__":
     from pathlib import Path
     import os
-    import time
-    from datetime import timedelta
+    from datetime import timedelta, datetime
 
     with Path.open(".env", "r") as f:
         for line in f.readlines():
@@ -95,27 +92,24 @@ if __name__ == "__main__":
                 k, v = line.split("=")
                 os.environ[k] = v.strip()
 
-    async def async_function():
-        start_time_count = time.monotonic()
+    async def main():
+        # you don't have to pass campaign_id or business_id,
+        # if you will not use methods, that require them
         async with MarketApi(
             os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"), os.getenv("BUSINESS_ID")
         ) as client:
-            print(len(await client.offer_mapping.list_offer_mappings()))  # noqa: T201
-        end_time = time.monotonic()
-        print(timedelta(seconds=end_time - start_time_count))  # noqa: T201
+            # print all orders from 14 days before now to now:
+            now = datetime.now()
+            orders = await client.order.list_orders(
+                fromDate=(now - timedelta(14)).date(), toDate=now.date()
+            )
+            print(orders)
+            # get offer_mappings of first order items
+            order = orders[0]
+            offer_ids = [item.offerId for item in order.items]
+            offer_mappings = await client.offer_mapping.list_offer_mappings(
+                offerIds=offer_ids
+            )
+            print(offer_mappings)
 
-    asyncio.run(async_function())
-    # print(api.warehouse.list_fby_warehouses())
-    # print(api.warehouse.list_warehouses())
-    # print(api.order.list_orders(status=OrderStatusType.PROCESSING)[-1])
-    # print(MarketApi.oauth.get_tokens_by_code(
-    #     os.getenv("CLIENT_ID"),
-    #     os.getenv("CLIENT_SECRET"), 8863298
-    # ))
-    # print(
-    #     MarketApi.oauth.get_tokens_by_refresh(
-    #         os.getenv("CLIENT_ID"),
-    #         os.getenv("CLIENT_SECRET"),
-    #         os.getenv("REFRESH_TOKEN"),
-    #     )
-    # )
+    asyncio.run(main())
