@@ -9,8 +9,9 @@ Easy way to communicate with russian marketplaces!
 * Supports Ozon SellerAPI and Yandex MarketAPI - support for Wildberries API planned
 
 ## Usage example
+> [!WARNING]
+> Do not use one SellerApi or MarketApi instance in multiple with context managers
 ### Ozon SellerAPI
-
 ```python
 import asyncio
 from datetime import datetime, timedelta
