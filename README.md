@@ -3,15 +3,27 @@
 Easy way to communicate with russian marketplaces!
 
 ## Features:
+
 * Fully async
 * Uses httpx and mashumaro - blazing fast!
 * Easy and not verbose to use
 * Supports Ozon SellerAPI and Yandex MarketAPI - support for Wildberries API planned
 
+## Installation
+
+```
+pip install "git+https://github.com/packify-org/marketplace_apis.git"
+# or to install library with ORJSON 
+pip install "git+https://github.com/packify-org/marketplace_apis.git[orjson]"
+```
+
 ## Usage example
+
 > [!WARNING]
 > Do not use one SellerApi or MarketApi instance in multiple with context managers
+
 ### Ozon SellerAPI
+
 ```python
 import asyncio
 from datetime import datetime, timedelta
@@ -36,8 +48,10 @@ async def main():
                 client.product.list_attributes(offer_id=["112026854"]))
         print(info.result(), attributes.result())
 
+
 asyncio.run(main())
 ```
+
 ### Yandex MarketAPI
 
 ```python
@@ -61,8 +75,10 @@ async def main():
         # get offer_mappings of first order items
         order = orders[0]
         offer_ids = [item.offerId for item in order.items]
-        offer_mappings = await client.offer_mapping.list_offer_mappings(offerIds=offer_ids)
+        offer_mappings = await client.offer_mapping.list_offer_mappings(
+            offerIds=offer_ids)
         print(offer_mappings)
+
 
 asyncio.run(main())
 ```

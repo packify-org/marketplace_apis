@@ -17,11 +17,21 @@ import functools
 from http import HTTPStatus
 from json import JSONDecodeError
 from typing import Self
+from collections.abc import Coroutine
 
 import httpx
 from httpx import Auth
 
 from marketplace_apis import __version__
+
+try:
+    from orjson import loads
+
+    loads_func = loads
+except ModuleNotFoundError:
+    from json import loads
+
+    loads_func = loads
 
 
 class ApiRequestException(Exception):
@@ -80,7 +90,7 @@ class AsyncRequester:
     @_check_for_errors_decorator
     async def get(
         self, path: str, params: dict[str, str] | None = None, decode: bool = True
-    ) -> tuple[httpx.Response, dict | bytes]:
+    ) -> tuple[httpx.Response, dict | bytes | Coroutine]:
         """
         Make get request to some path with url params
         :param path: url where make request to
@@ -95,7 +105,7 @@ class AsyncRequester:
         decoded = response.content
         if decode:
             with contextlib.suppress(JSONDecodeError):
-                decoded = response.json()
+                decoded = loads_func(response.content)
         return response, decoded
 
     @_check_for_errors_decorator
@@ -123,7 +133,7 @@ class AsyncRequester:
         decoded = response.content
         if decode:
             with contextlib.suppress(JSONDecodeError):
-                decoded = response.json()
+                decoded = loads_func(response.content)
         return response, decoded
 
 
@@ -137,7 +147,7 @@ if __name__ == "__main__":
 
         async def get_cat(client, i):
             print(f"start {i}")  # noqa: T201
-            resp, content = await client.get("cat", decode=False)
+            _, content = await client.get("cat", decode=False)
             print(f"end {i}")  # noqa: T201
             with Path.open(f"test{i}.png", "wb") as f:
                 f.write(content)

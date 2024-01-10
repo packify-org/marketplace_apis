@@ -9,12 +9,12 @@ authors = [
 dynamic = ["version", "description"]
 dependencies = [
     "httpx",
-    "httpx_ratelimiter",
     "mashumaro"
 ]
 
 [project.optional-dependencies]
 dev = ["pre-commit"]
+orjson = ["orjson"]
 
 [tool.ruff]
 select = ["E", "F", "RUF", "PERF", "TRY", "PL", "PTH", "ARG", "SIM", "PIE", "C4",
