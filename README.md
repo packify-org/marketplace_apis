@@ -20,7 +20,7 @@ pip install "marketplace_apis[orjson] @ git+https://github.com/packify-org/marke
 ## Usage example
 
 > [!WARNING]
-> Do not use one SellerApi or MarketApi instance in multiple with context managers
+> Do not use one SellerApi or MarketApi instance in multiple `with` context managers
 
 ### Ozon SellerAPI
 
