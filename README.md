@@ -12,9 +12,9 @@ Easy way to communicate with russian marketplaces!
 ## Installation
 
 ```
-pip install "git+https://github.com/packify-org/marketplace_apis.git"
+pip install "marketplace_apis @ git+https://github.com/packify-org/marketplace_apis.git"
 # or to install library with ORJSON 
-pip install "git+https://github.com/packify-org/marketplace_apis.git[orjson]"
+pip install "marketplace_apis[orjson] @ git+https://github.com/packify-org/marketplace_apis.git"
 ```
 
 ## Usage example
