@@ -83,6 +83,19 @@ async def main():
 asyncio.run(main())
 ```
 
+## Factories
+In order to pass same auth data in all context managers, you can use factories:
+```python
+import os
+from marketplace_apis.ozon.seller_api import SellerApiFactory
+
+seller_api = SellerApiFactory(os.getenv("API_KEY"), os.getenv("CLIENT_ID"))
+async with seller_api() as client:
+    # do something...
+    pass
+```
+Same works with MarketApi. (Use MarketApiFactory for that)
+
 ## Currently supported api endpoints:
 
 #### OZON SellerAPI
