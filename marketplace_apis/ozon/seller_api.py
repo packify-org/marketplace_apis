@@ -64,6 +64,15 @@ class SellerApi(AsyncRequester):
         self.product = ProductMethods(self)
 
 
+class SellerApiFactory:
+    def __init__(self, api_key: str, client_id: str):
+        self.api_key = api_key
+        self.client_id = client_id
+
+    def __call__(self, *args, **kwargs) -> SellerApi:
+        return SellerApi(self.api_key, self.client_id)
+
+
 if __name__ == "__main__":
     from pathlib import Path
     import os
@@ -78,7 +87,8 @@ if __name__ == "__main__":
                 os.environ[k] = v.strip()
 
     async def main():
-        async with SellerApi(os.getenv("API_KEY"), os.getenv("CLIENT_ID")) as client:
+        seller_api = SellerApiFactory(os.getenv("API_KEY"), os.getenv("CLIENT_ID"))
+        async with seller_api() as client:
             # print all postings from 14 days before now to now:
             now = datetime.now()
             postings = await client.posting.list_postings(

@@ -81,6 +81,18 @@ class MarketApi(AsyncRequester):
         self.campaign = CampaignMethods(self)
 
 
+class MarketApiFactory:
+    def __init__(
+        self, token: str, campaign_id: str | None = None, business_id: str | None = None
+    ):
+        self.token = token
+        self.campaign_id = campaign_id
+        self.business_id = business_id
+
+    def __call__(self, *args, **kwargs) -> MarketApi:
+        return MarketApi(self.token, self.campaign_id, self.business_id)
+
+
 if __name__ == "__main__":
     from pathlib import Path
     import os
@@ -95,9 +107,10 @@ if __name__ == "__main__":
     async def main():
         # you don't have to pass campaign_id or business_id,
         # if you will not use methods, that require them
-        async with MarketApi(
+        market_api = MarketApiFactory(
             os.getenv("TOKEN"), os.getenv("CAMPAIGN_ID"), os.getenv("BUSINESS_ID")
-        ) as client:
+        )
+        async with market_api() as client:
             # print all orders from 14 days before now to now:
             now = datetime.now()
             orders = await client.order.list_orders(
