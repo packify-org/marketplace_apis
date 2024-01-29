@@ -16,26 +16,47 @@ from enum import StrEnum
 
 
 def datetime_to_iso(dt: datetime, tz: tzinfo = UTC) -> str:
-    """Helper function to convert datetime to ISO string while converting it to some
-    timezone"""
-    # if dt is not in our timezone
+    """
+    Converts a datetime object to an ISO formatted string, adjusting for a specified timezone.
+
+    Parameters:
+    dt (datetime): The datetime object to convert.
+    tz (tzinfo, optional): The timezone to adjust the datetime object to. Defaults to UTC.
+
+    Returns:
+    str: The ISO formatted string representation of the datetime object.
+    """
     if dt.tzinfo != tz:
         dt = dt.astimezone(tz)
     return dt.isoformat()
 
 
 def dict_datetime_to_iso(dict_: dict, tz: tzinfo = UTC):
-    """Helper function to convert all datetime values to their ISO representation"""
+    """
+    Recursively converts all datetime objects in a dictionary to their ISO representation.
+
+    Parameters:
+    dict_ (dict): The dictionary containing datetime objects to convert.
+    tz (tzinfo, optional): The timezone to adjust the datetime objects to. Defaults to UTC.
+
+    Returns:
+    None
+    """
     for k, v in dict_.items():
         if isinstance(v, datetime):
             dict_[k] = datetime_to_iso(v, tz)
-        if isinstance(v, dict):
+        elif isinstance(v, dict):
             dict_datetime_to_iso(v, tz)
 
 
 class TranslatedStrEnum(StrEnum):
     def translation(self) -> str:
-        """Returns russian translation of enum member"""
+        """
+        Returns the Russian translation of the enumeration member.
+
+        Returns:
+        str: The Russian translation of the enumeration member.
+        """
         if hasattr(self, "__translations__"):
             return self.__translations__[self.value]
         return self.name.capitalize()

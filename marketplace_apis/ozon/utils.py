@@ -12,14 +12,17 @@
 #  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+FILTER_PREFIX_LENGTH = len("filter_")
+WITH_PREFIX_LENGTH = len("with_")
+
 
 def kwargs_to_filters(kwargs) -> tuple[dict, dict]:
     filter_ = {}
     with_ = {}
     for k, v in kwargs.items():
         k: str
-        if k.startswith("filter"):
-            filter_[k[7:]] = v
-        elif k.startswith("with"):
-            with_[k[5:]] = v
+        if k.startswith("filter_"):
+            filter_[k[FILTER_PREFIX_LENGTH:]] = v
+        elif k.startswith("with_"):
+            with_[k[WITH_PREFIX_LENGTH:]] = v
     return filter_, with_

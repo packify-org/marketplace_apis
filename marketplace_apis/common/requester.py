@@ -16,8 +16,7 @@ import contextlib
 import functools
 from http import HTTPStatus
 from json import JSONDecodeError
-from typing import Self
-from collections.abc import Coroutine
+from typing import Self, Any
 
 import httpx
 from httpx import Auth
@@ -67,12 +66,10 @@ class AsyncRequester:
     def __init__(
         self,
         endpoint: str,
-        headers: dict[str] | None = None,
+        headers: dict[str, str] | None = None,
         auth: Auth | None = None,
     ):
-        if headers is None:
-            headers = {}
-        self.headers = headers
+        self.headers = headers if headers else {}
         self.endpoint = endpoint
         self._auth = auth
         self.headers["User-Agent"] = f"MarketplaceApis/{__version__}"
@@ -88,9 +85,28 @@ class AsyncRequester:
         await self._http_client.aclose()
 
     @_check_for_errors_decorator
+    async def _make_request(
+        self,
+        method: str,
+        path: str,
+        params: dict[str, str] | None = None,
+        data: dict[str, Any] = None,
+        decode: bool = True,
+    ) -> tuple[httpx.Response, dict | bytes]:
+        params = params if params else {}
+        kwargs = {"params": params}
+        if data:
+            kwargs |= {"json": data}
+        response = await getattr(self._http_client, method)(path, **kwargs)
+        decoded = response.content
+        if decode:
+            with contextlib.suppress(JSONDecodeError):
+                decoded = loads_func(decoded)
+        return response, decoded
+
     async def get(
         self, path: str, params: dict[str, str] | None = None, decode: bool = True
-    ) -> tuple[httpx.Response, dict | bytes | Coroutine]:
+    ) -> tuple[httpx.Response, dict | bytes]:
         """
         Make get request to some path with url params
         :param path: url where make request to
@@ -99,20 +115,12 @@ class AsyncRequester:
         :return: Response object, dict with decoded content or None
         :rtype: tuple[Response, dict | bytes]
         """
-        if params is None:
-            params = {}
-        response = await self._http_client.get(path, params=params)
-        decoded = response.content
-        if decode:
-            with contextlib.suppress(JSONDecodeError):
-                decoded = loads_func(response.content)
-        return response, decoded
+        return await self._make_request("get", path, params, decode=decode)
 
-    @_check_for_errors_decorator
     async def post(
         self,
         path: str,
-        data: dict | None = None,
+        data: dict[str, Any] | None = None,
         params: dict[str, str] | None = None,
         decode: bool = True,
     ) -> tuple[httpx.Response, dict | bytes]:
@@ -125,16 +133,7 @@ class AsyncRequester:
         :return: Response object, dict with decoded content or None
         :rtype: tuple[Response, dict | bytes]
         """
-        if data is None:
-            data = {}
-        if params is None:
-            params = {}
-        response = await self._http_client.post(path, json=data, params=params)
-        decoded = response.content
-        if decode:
-            with contextlib.suppress(JSONDecodeError):
-                decoded = loads_func(response.content)
-        return response, decoded
+        return await self._make_request("post", path, params, data, decode=decode)
 
 
 if __name__ == "__main__":
