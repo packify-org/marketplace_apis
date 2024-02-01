@@ -14,4 +14,4 @@
 
 """Easy way to communicate with russian marketplaces"""
 
-__version__ = "2.0.3"
+__version__ = "3.0.0"

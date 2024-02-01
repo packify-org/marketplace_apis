@@ -26,8 +26,6 @@ from marketplace_apis.yandex.order.item_promo import OrderItemPromo
 class OrderItem(MarketApiBaseModel):
     """Товар в заказе."""
 
-    feedId: int
-    """Идентификатор каталога товаров."""
     offerId: str
     """Идентификатор вашего товарного предложения для определенного товара.
      `Описание поля в Справке для продавцов
@@ -95,3 +93,5 @@ class OrderItem(MarketApiBaseModel):
     """Список субсидий по типам."""
     requiredInstanceTypes: list[OrderItemInstanceType] | None = None
     """Список необходимых маркировок товара."""
+    feedId: int | None = None
+    """Идентификатор каталога товаров."""
