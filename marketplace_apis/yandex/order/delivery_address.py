@@ -26,7 +26,7 @@ class OrderDeliveryAddress(MarketApiBaseModel):
     """Страна."""
     city: str
     """Город или населенный пункт."""
-    house: str
+    house: str | None = None
     """Дом или владение."""
     district: str | None = None
     """Район."""
