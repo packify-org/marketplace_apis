@@ -2,7 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 repos:
     -   repo: https://github.com/pre-commit/pre-commit-hooks
-        rev: v4.5.0
+        rev: v4.6.0
         hooks:
             -   id: check-yaml
             -   id: check-added-large-files
@@ -17,19 +17,15 @@ repos:
         hooks:
             -   id: auto-walrus
     -   repo: https://github.com/jazzband/pip-tools
-        rev: 7.3.0
+        rev: 7.4.1
         hooks:
             -   id: pip-compile
                 files: pyproject.toml
     -   repo: https://github.com/astral-sh/ruff-pre-commit
-        rev: v0.1.6
+        rev: v0.3.5
         hooks:
             -   id: ruff
                 args: [ --fix, --exit-zero ]
             -   id: ruff-format
-    -   repo: https://github.com/jorisroovers/gitlint
-        rev: v0.19.1
-        hooks:
-            -   id: gitlint
 default_language_version:
     python: python3.12
