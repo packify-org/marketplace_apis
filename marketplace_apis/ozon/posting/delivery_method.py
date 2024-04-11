@@ -21,7 +21,7 @@ from marketplace_apis.ozon.base import SellerApiBaseModel
 class DeliveryMethod(SellerApiBaseModel):
     """Метод доставки."""
 
-    id: int  # noqa: A003
+    id: int
     """Идентификатор способа доставки."""
     name: str
     """Название способа доставки."""

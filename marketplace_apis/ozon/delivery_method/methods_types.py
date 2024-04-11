@@ -21,5 +21,5 @@ class ListDeliveryMethodsFilter(TypedDict):
     """Идентификатор службы доставки."""
     filter_status: NotRequired[DeliveryMethodStatus]
     """Статус метода доставки"""
-    filter_warehouse_id: NotRequired[None]
+    filter_warehouse_id: NotRequired[int]
     """Идентификатор склада."""

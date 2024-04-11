@@ -13,17 +13,31 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pre-commit"]
+dev = [
+    "pre-commit",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocs-minify-plugin",
+    "mkdocs-git-revision-date-localized-plugin",
+    "mkdocs-git-committers-plugin-2",
+    "pymdown-extensions",
+    "pygments",
+    "mkdocstrings[python]",
+    "mkdocs-gen-files",
+    "mkdocs-literate-nav",
+    "mkdocs-section-index"
+]
 orjson = ["orjson"]
 
 [tool.ruff]
 select = ["E", "F", "RUF", "PERF", "TRY", "PL", "PTH", "ARG", "SIM", "PIE", "C4",
     "B", "S", "UP", "C90", "A", "T20", "FURB"]
 preview = true
-ignore = ["RUF001", "RUF002", "PLR0913", "RUF003"]
 target-version = "py312"
+ignore = ["RUF001", "RUF002", "PLR0913", "RUF003"]
 
 [tool.ruff.lint.per-file-ignores]
+
 "__init__.py" = ["E402"]
 "tests/*" = ["PLR6301", "S101"]
 

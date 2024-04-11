@@ -45,21 +45,21 @@ class TestRequester:
         async def test_get_200(self, requester_no_headers: AsyncRequester, respx_mock):
             respx_mock.get("get").mock(return_value=httpx.Response(200))
             async with requester_no_headers as client:
-                response, decoded = await client.get("get")
+                response, _ = await client.get("get")
                 assert response.status_code == HTTPStatus.OK
 
         async def test_get_401(self, requester_no_headers: AsyncRequester, respx_mock):
             respx_mock.get("status/401").mock(return_value=httpx.Response(401))
             async with requester_no_headers as client:
                 with pytest.raises(ApiRequestException):
-                    response, decoded = await client.get("status/401")
+                    await client.get("status/401")
 
         async def test_get_headers(self, respx_mock):
             respx_mock.get("headers").mock(side_effect=header_echo)
             async with AsyncRequester(
                 "https://foo.bar/", headers={"test-header": "test"}
             ) as client:
-                response, decoded = await client.get("headers")
+                _, decoded = await client.get("headers")
                 assert decoded["headers"]["test-header"] == "test"
                 # test user-agent header
                 assert "MarketplaceApis" in decoded["headers"]["user-agent"]
@@ -69,21 +69,21 @@ class TestRequester:
         async def test_post_200(self, requester_no_headers: AsyncRequester, respx_mock):
             respx_mock.post("post").mock(return_value=httpx.Response(200))
             async with requester_no_headers as client:
-                response, decoded = await client.post("post")
+                response, _ = await client.post("post")
                 assert response.status_code == HTTPStatus.OK
 
         async def test_post_401(self, requester_no_headers: AsyncRequester, respx_mock):
             respx_mock.post("status/401").mock(return_value=httpx.Response(401))
             async with requester_no_headers as client:
                 with pytest.raises(ApiRequestException):
-                    response, decoded = await client.post("status/401")
+                    await client.post("status/401")
 
         async def test_post_data(
             self, requester_no_headers: AsyncRequester, respx_mock
         ):
             respx_mock.post("post").mock(side_effect=body_echo)
             async with requester_no_headers as client:
-                response, decoded = await client.post(
+                _, decoded = await client.post(
                     "post", data={"test": ["test1", "test2"]}
                 )
                 assert decoded["test"] == ["test1", "test2"]
@@ -93,7 +93,7 @@ class TestRequester:
         ):
             respx_mock.post("post").mock(side_effect=urlparams_echo)
             async with requester_no_headers as client:
-                response, decoded = await client.post("post", params={"test": "true"})
+                _, decoded = await client.post("post", params={"test": "true"})
                 assert decoded["params"]["test"] == "true"
 
         async def test_post_headers(self, respx_mock):
@@ -101,7 +101,7 @@ class TestRequester:
             async with AsyncRequester(
                 "https://foo.bar/", headers={"test-header": "test"}
             ) as client:
-                response, decoded = await client.post("headers")
+                _, decoded = await client.post("headers")
                 assert decoded["headers"]["test-header"] == "test"
                 # test user-agent header
                 assert "MarketplaceApis" in decoded["headers"]["user-agent"]

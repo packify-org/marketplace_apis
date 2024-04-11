@@ -36,7 +36,7 @@ class PostingProduct(SellerApiBaseModel):
     """Обязательная маркировка товара."""
     name: str
     """Название товара."""
-    offer_id: str  #
+    offer_id: str
     """Идентификатор товара в системе продавца — артикул."""
     price: str
     """Цена товара."""

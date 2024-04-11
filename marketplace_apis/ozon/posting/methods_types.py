@@ -18,11 +18,11 @@ from marketplace_apis.ozon.posting.enums import PostingStatus
 
 
 class ListPostingsFilter(TypedDict):
-    filter_delivery_method_id: NotRequired[int]
+    filter_delivery_method_id: NotRequired[list[int]]
     """Идентификатор способа доставки."""
     filter_order_id: NotRequired[int]
     """Идентификатор заказа."""
-    filter_provider_id: NotRequired[int]
+    filter_provider_id: NotRequired[list[int]]
     """Идентификатор службы доставки."""
     filter_since: datetime
     """Дата начала периода, за который нужно получить список отправлений.
@@ -38,7 +38,7 @@ class ListPostingsFilter(TypedDict):
     Пример: ``2019-08-24T14:15:22Z``."""
     filter_status: NotRequired[PostingStatus]
     """Статус отправления"""
-    filter_warehouse_id: NotRequired[None]
+    filter_warehouse_id: NotRequired[list[int]]
     """Идентификатор склада."""
 
 

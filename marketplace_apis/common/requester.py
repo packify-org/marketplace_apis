@@ -90,7 +90,7 @@ class AsyncRequester:
         method: str,
         path: str,
         params: dict[str, str] | None = None,
-        data: dict[str, Any] = None,
+        data: dict[str, Any] | None = None,
         decode: bool = True,
     ) -> tuple[httpx.Response, dict | bytes]:
         params = params if params else {}

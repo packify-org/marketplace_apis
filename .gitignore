@@ -148,3 +148,4 @@ dmypy.json
 .pytype/
 cython_debug/
 api_key
+site/

@@ -89,7 +89,7 @@ class MarketApiFactory:
         self.campaign_id = campaign_id
         self.business_id = business_id
 
-    def __call__(self, *args, **kwargs) -> MarketApi:
+    def __call__(self) -> MarketApi:
         return MarketApi(self.token, self.campaign_id, self.business_id)
 
 
@@ -116,13 +116,13 @@ if __name__ == "__main__":
             orders = await client.order.list_orders(
                 fromDate=(now - timedelta(14)).date(), toDate=now.date()
             )
-            print(orders)
+            print(orders)  # noqa: T201
             # get offer_mappings of first order items
             order = orders[0]
             offer_ids = [item.offerId for item in order.items]
             offer_mappings = await client.offer_mapping.list_offer_mappings(
                 offerIds=offer_ids
             )
-            print(offer_mappings)
+            print(offer_mappings)  # noqa: T201
 
     asyncio.run(main())

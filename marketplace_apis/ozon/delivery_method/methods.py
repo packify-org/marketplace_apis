@@ -30,14 +30,19 @@ class DeliveryMethodMethods(SellerApiABCMethods):
         offset: int = 0,
         **kwargs: Unpack[ListDeliveryMethodsFilter],
     ) -> list[DeliveryMethod]:
-        """List delivery methods.
-        :param limit: Maximum amount of delivery methods what will be retrieved in one
-        request
-        :param offset: Number of delivery methods in this array from what response will
-        be retrieved
-        :param iter_: Whenever to get all postings by making multiple requests or not
-
-        :return: List of delivery methods
+        """
+        Получить список методов доставки.
+        # Аргументы:
+        * iter_ (по умолчанию True) - необходимо ли получать все объекты,
+        итерируясь по страницам
+        * limit (по умолчанию 1000) - максимальное количество объектов, которое будет
+        получено за один запрос
+        * offset (по умолчанию 0) - с какого объекта начать первую страницу?
+        * filter_provider_id (опционально) - Идентификатор службы доставки (int).
+        * filter_status (опционально) - Идентификатор службы доставки
+        ([DeliveryMethodStatus](enums.md#ozon.delivery_method.enums.DeliveryMethodStatus)).
+        * filter_warehouse_id (опционально) - Идентификатор склада (int).
+        # Возвращает: list[[DeliveryMethod](delivery_method.md)]
         """
         raw_delivery_methods = []
         filter_, _ = kwargs_to_filters(kwargs)

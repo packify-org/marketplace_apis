@@ -69,7 +69,7 @@ class SellerApiFactory:
         self.api_key = api_key
         self.client_id = client_id
 
-    def __call__(self, *args, **kwargs) -> SellerApi:
+    def __call__(self) -> SellerApi:
         return SellerApi(self.api_key, self.client_id)
 
 
@@ -94,15 +94,15 @@ if __name__ == "__main__":
             postings = await client.posting.list_postings(
                 filter_since=now - timedelta(14), filter_to=now
             )
-            print(postings)
+            print(postings)  # noqa: T201
             # get product infos and attributes from first posting products concurrently
             async with asyncio.TaskGroup() as tg:
                 posting = postings[0]
                 offer_ids = [product.offer_id for product in posting.products]
-                info = tg.create_task(client.product.list_info(["112026854"]))
+                info = tg.create_task(client.product.list_info(offer_ids[0]))
                 attributes = tg.create_task(
-                    client.product.list_attributes(offer_id=["112026854"])
+                    client.product.list_attributes(offer_id=offer_ids[0])
                 )
-            print(info.result(), attributes.result())
+            print(info.result(), attributes.result())  # noqa: T201
 
     asyncio.run(main())

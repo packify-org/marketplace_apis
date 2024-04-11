@@ -26,12 +26,17 @@ class ProductMethods(SellerApiABCMethods):
         product_id: list[int] | None = None,
         sku: list[int] | None = None,
     ) -> list[Product]:
-        """List product infos.
-        :param offer_id: list of offer_id
-        :param product_id: list of product_id
-        :param sku: list of sku
+        """
+        Получить список информации о товарах.
+        # Аргументы:
+        * offer_id - (опционально) список offer_id, по которым требуется получить
+        информацию (list[str])
+        * product_id - (опционально)  список product_id, по которым требуется получить
+        информацию (list[int])
+        * sku - (опционально) список sku,  по которым требуется получить информацию
+        (list[int])
 
-        :return: List of Products
+        # Возвращает: list[[Product](product.md)]
         """
         _, data = await self.client.post(
             API_PATH["list_product_info"],
@@ -52,13 +57,22 @@ class ProductMethods(SellerApiABCMethods):
         dir_="DESC",
         **kwargs: Unpack[ListAttributesFilter],
     ) -> list[Product]:
-        """List product attributes.
-        :param limit: Maximum amount of Product attributes what will be retrieved in one
-        request
-        :param iter_: Whenever to get all postings by making multiple requests or not
-        :param dir_: Direction of sorting - ``DESC`` or ``ASC``
+        """
+        Получить список аттрибутов товара.
+        # Аргументы:
+        * dir_ (по умолчанию "desc") - направление сортировки
+        * iter_ (по умолчанию True) - необходимо ли получать все объекты,
+        итерируясь по страницам
+        * limit (по умолчанию 1000) - максимальное количество объектов, которое будет
+        получено за один запрос
+        * offer_id (опционально) - Фильтр по параметру offer_id.
+        Можно передавать список значений.
+        * product_id (опционально) - Фильтр по параметру product_id.
+        Можно передавать список значений.
+        * visibility (опционально - Фильтр по видимости товара
+        ([Visibility](enums.md#ozon.product.enums.Visibility)
 
-        :return: List of product attributes
+        # Возвращает: list[[Product](product.md)]
         """
 
         raw_products = []

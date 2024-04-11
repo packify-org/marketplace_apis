@@ -43,7 +43,7 @@ class TestPosting:
 
     async def test_label_task_create(self, seller_api):
         async with seller_api as client:
-            task_id = await client.posting.label_task_create(
-                [ValueStorage.postings[0].posting_number]
-            )
+            task_id = await client.posting.label_task_create([
+                ValueStorage.postings[0].posting_number
+            ])
             assert isinstance(task_id, int)

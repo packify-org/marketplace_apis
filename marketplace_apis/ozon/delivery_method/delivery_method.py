@@ -22,6 +22,8 @@ from marketplace_apis.ozon.delivery_method.enums import DeliveryMethodStatus
 
 @dataclass
 class DeliveryMethod(SellerApiBaseModel):
+    """Метод доставки"""
+
     company_id: int
     """Идентификатор продавца."""
     created_at: datetime

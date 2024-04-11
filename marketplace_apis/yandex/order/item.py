@@ -30,8 +30,6 @@ class OrderItem(MarketApiBaseModel):
     """Идентификатор вашего товарного предложения для определенного товара.
      `Описание поля в Справке для продавцов
      <https://yandex.ru/support/marketplace/assortment/fields/index.html#sku>`_"""
-    feedCategoryId: str
-    """Идентификатор категории, указанный в каталоге."""
     offerName: str
     """Название товара."""
     price: float
@@ -95,3 +93,5 @@ class OrderItem(MarketApiBaseModel):
     """Список необходимых маркировок товара."""
     feedId: int | None = None
     """Идентификатор каталога товаров."""
+    feedCategoryId: str | None = None
+    """Идентификатор категории, указанный в каталоге."""

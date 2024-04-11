@@ -17,11 +17,13 @@ from enum import StrEnum
 
 def datetime_to_iso(dt: datetime, tz: tzinfo = UTC) -> str:
     """
-    Converts a datetime object to an ISO formatted string, adjusting for a specified timezone.
+    Converts a datetime object to an ISO formatted string, adjusting for a specified
+    timezone.
 
     Parameters:
     dt (datetime): The datetime object to convert.
-    tz (tzinfo, optional): The timezone to adjust the datetime object to. Defaults to UTC.
+    tz (tzinfo, optional): The timezone to adjust the datetime object to. Defaults to
+    UTC.
 
     Returns:
     str: The ISO formatted string representation of the datetime object.
@@ -33,11 +35,13 @@ def datetime_to_iso(dt: datetime, tz: tzinfo = UTC) -> str:
 
 def dict_datetime_to_iso(dict_: dict, tz: tzinfo = UTC):
     """
-    Recursively converts all datetime objects in a dictionary to their ISO representation.
+    Recursively converts all datetime objects in a dictionary to their ISO
+    representation.
 
     Parameters:
     dict_ (dict): The dictionary containing datetime objects to convert.
-    tz (tzinfo, optional): The timezone to adjust the datetime objects to. Defaults to UTC.
+    tz (tzinfo, optional): The timezone to adjust the datetime objects to. Defaults to
+    UTC.
 
     Returns:
     None

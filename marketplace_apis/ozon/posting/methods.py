@@ -37,14 +37,32 @@ class PostingMethods(SellerApiABCMethods):
         offset: int = 0,
         **kwargs: Unpack[ListPostings],
     ) -> list[Posting]:
-        """List postings.
-        :param limit: Maximum amount of Postings what will be retrieved in one request
-        :param offset: Number of posting in this array from what response will be
-        retrieved
-        :param iter_: Whenever to get all postings by making multiple requests or not
-        :param dir_: Direction of sorting - ``desc`` or ``asc``
+        """
+        Получить список отправлений.
+        # Аргументы:
+        * filter_since - Дата начала периода, за который нужно получить список
+        отправлений. (datetime)
+        * filter_to - Дата конца периода, за который нужно получить список
+        отправлений. (datetime)
+        * dir_ (по умолчанию "desc") - направление сортировки
+        * iter_ (по умолчанию True) - необходимо ли получать все объекты,
+        итерируясь по страницам
+        * limit (по умолчанию 1000) - максимальное количество объектов, которое будет
+        получено за один запрос
+        * offset (по умолчанию 0) - с какого объекта начать первую страницу?
+        * with_analytics_data (опционально) - Добавить в ответ данные аналитики.
+        * with_barcodes (опционально) - Добавить в ответ штрихкоды отправления.
+        * with_financial_data (опционально) - Добавить в ответ финансовые данные.
+        * with_translit (опционально) - Выполнить транслитерацию возвращаемых значений.
+        * filter_delivery_method_id (опционально) - Идентификатор способа доставки.
+        (list[int])
+        * filter_order_id (опционально) - Идентификатор заказа. (int)
+        * filter_provider_id (опционально) - Идентификатор службы доставки. (list[int])
+        * filter_status (опционально) - Статус отправления.
+        ([PostingStatus](enums.md#ozon.posting.enums.PostingStatus))
+        * filter_warehouse_id (опционально) - Идентификатор службы доставки. (list[int])
 
-        :return: List of postings
+        # Возвращает: list[[Posting](posting.md)]
         """
         dict_datetime_to_iso(kwargs)
         raw_postings = []
@@ -74,7 +92,19 @@ class PostingMethods(SellerApiABCMethods):
 
     async def get_by_number(
         self, posting_number: str, **kwargs: Unpack[GetPostingsWith]
-    ):
+    ) -> Posting:
+        """
+        Получить отправление по его номеру.
+        # Аргументы:
+        * posting_number - номер отправления
+        * product_exemplars (опционально) - Добавить в ответ данные о продуктах и их
+        экземплярах.
+        * related_postings (опционально) - Добавить в ответ номера связанных
+        отправлений. Связанные отправления — те, на которое было разделено родительское
+        отправление при сборке.
+
+        # Возвращает: [Posting](posting.md)
+        """
         _, with_ = kwargs_to_filters(kwargs)
         _, data = await self.client.post(
             API_PATH["get_posting_by_number"],
@@ -83,12 +113,27 @@ class PostingMethods(SellerApiABCMethods):
         return Posting.from_dict(data["result"])
 
     async def label_task_create(self, posting_numbers: list[str]) -> int:
+        """
+        Создать задание на асинхронное получение этикетки.
+        # Аргументы:
+        * posting_number - номер отправления
+
+        # Возвращает: int - Идентификатор задания на формирование этикеток.
+        """
         _, data = await self.client.post(
             API_PATH["package_label_create"], data={"posting_number": posting_numbers}
         )
         return data["result"]["task_id"]
 
     async def label_task_get(self, task_id: int) -> AsyncLabelGetResult:
+        """
+        Проверить статус задания или получить этикетку, созданную label_task_create
+        # Аргументы:
+        * task_id - Идентификатор задания на формирование этикеток.
+
+        # Возвращает:
+        [AsyncLabelGetResult](label.md#ozon.posting.label.AsyncLabelGetResult)
+        """
         _, data = await self.client.post(
             API_PATH["package_label_get"], data={"task_id": task_id}
         )
@@ -100,6 +145,18 @@ class PostingMethods(SellerApiABCMethods):
         packages: list[list[ShipPostingProduct]],
         **kwargs: Unpack[ShipPostingWith],
     ) -> PostingShipResult:
+        """
+        Собрать заказ.
+        # Аргументы:
+        * posting_number - номер отправления
+        * packages - список упаковок. Каждая упаковка - список товаров.
+        (list[list[[ShipPostingProduct]
+        (methods_types.md#ozon.posting.methods_types.ShipPostingProduct)]])
+        * with_additional_data (опционально) - Добавить в ответ дополнительную
+        информацию.
+
+        # Возвращает: [PostingShipResult](ship.md#ozon.posting.ship.PostingShipResult)
+        """
         _, with_ = kwargs_to_filters(kwargs)
         _, data = await self.client.post(
             API_PATH["ship_posting"],
