@@ -49,3 +49,4 @@ class FirstMileType(StrEnum):
 
     DROP_OFF = "DropOff"
     PICKUP = "Pickup"
+    NULL = ""

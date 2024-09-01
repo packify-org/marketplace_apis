@@ -15,7 +15,6 @@
 from dataclasses import dataclass
 from datetime import date, time
 
-
 from marketplace_apis.yandex.base import MarketApiBaseModel
 from marketplace_apis.yandex.order.enums import OrderParcelStatusType
 from marketplace_apis.yandex.order.parcel_box import OrderParcelBox
@@ -26,8 +25,6 @@ from marketplace_apis.yandex.order.track import OrderTrack
 class OrderShipment(MarketApiBaseModel):
     """Информация о посылках."""
 
-    status: OrderParcelStatusType
-    """Статус заказа в партнерской службе доставки."""
     shipmentDate: date
     """День, в который нужно отгрузить заказ службе доставки."""
     id_: int
@@ -38,3 +35,5 @@ class OrderShipment(MarketApiBaseModel):
     """Информация для отслеживания перемещений посылки."""
     boxes: list[OrderParcelBox] | None = None
     """Список грузовых мест."""
+    status: OrderParcelStatusType | None = None
+    """Статус заказа в партнерской службе доставки."""

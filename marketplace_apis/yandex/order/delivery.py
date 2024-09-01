@@ -39,10 +39,6 @@ class OrderDelivery(MarketApiBaseModel):
 
     serviceName: str
     """Наименование службы доставки."""
-    price: float
-    """Стоимость доставки в валюте заказа.
-
-    Для отделения целой части от дробной используется точка."""
     deliveryPartnerType: OrderDeliveryPartnerType
     """Тип сотрудничества со службой доставки в рамках конкретного заказа:
 
@@ -96,3 +92,7 @@ class OrderDelivery(MarketApiBaseModel):
     """Информация о курьере."""
     tracks: list[OrderTrack] | None = None
     """Информация для отслеживания перемещений посылки."""
+    price: float | None = None
+    """Стоимость доставки в валюте заказа.
+
+    Для отделения целой части от дробной используется точка."""
