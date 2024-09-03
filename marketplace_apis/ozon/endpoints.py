@@ -13,6 +13,7 @@
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 API_PATH = {
     # region postings
+    "list_fbo_postings": "v2/posting/fbo/list",
     "list_postings": "v3/posting/fbs/list",
     "get_posting_by_number": "v3/posting/fbs/get",
     "ship_posting": "v4/posting/fbs/ship",
@@ -28,5 +29,6 @@ API_PATH = {
     # region products
     "list_product_info": "v2/product/info/list",
     "list_product_attributes": "v3/products/info/attributes",
+    "list_product": "v2/product/list",
     # endregion
 }
