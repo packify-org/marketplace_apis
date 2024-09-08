@@ -90,6 +90,66 @@ class PostingMethods(SellerApiABCMethods):
 
         return [Posting.from_dict(raw_posting) for raw_posting in raw_postings]
 
+
+    async def list_fbo_postings(
+        self,
+        dir_: str = "desc",
+        iter_: bool = True,
+        limit: int = 1000,
+        offset: int = 0,
+        raw: bool = False,
+        **kwargs: Unpack[ListPostings],
+    ) -> list[Posting]:
+        """
+        Получить список FBO отправлений.
+        # Аргументы:
+        * filter_since - Дата начала периода, за который нужно получить список
+        отправлений. (datetime)
+        * filter_to - Дата конца периода, за который нужно получить список
+        отправлений. (datetime)
+        * dir_ (по умолчанию "desc") - направление сортировки
+        * iter_ (по умолчанию True) - необходимо ли получать все объекты,
+        итерируясь по страницам
+        * limit (по умолчанию 1000) - максимальное количество объектов, которое будет
+        получено за один запрос
+        * offset (по умолчанию 0) - с какого объекта начать первую страницу?
+        * with_analytics_data (опционально) - Добавить в ответ данные аналитики.
+        * with_financial_data (опционально) - Добавить в ответ финансовые данные.
+        * with_translit (опционально) - Выполнить транслитерацию возвращаемых значений.
+        * filter_status (опционально) - Статус отправления.
+
+        # Возвращает: list[[Posting](posting.md)]
+        """
+        dict_datetime_to_iso(kwargs)
+        raw_postings = []
+        filter_, with_ = kwargs_to_filters(kwargs)
+
+        async def make_request():
+            resp, decoded_resp = await self.client.post(
+                API_PATH["list_fbo_postings"],
+                data={
+                    "limit": limit,
+                    "offset": offset,
+                    "dir": dir_,
+                    "filter": filter_,
+                    "with": with_,
+                },
+            )
+            nonlocal raw_postings
+            raw_postings += decoded_resp["result"]
+            return resp, decoded_resp
+
+        _, data = await make_request()
+        while iter_ and data["result"]: 
+            offset += limit
+            _, data = await make_request()
+
+        if raw:
+            return raw_postings
+        raise NotImplementedError(f"Для данного метода предусмотрена выгрузка только сырых"
+                                  f" данных, используйте аргумент raw=True")
+
+
     async def get_by_number(
         self, posting_number: str, **kwargs: Unpack[GetPostingsWith]
     ) -> Posting:

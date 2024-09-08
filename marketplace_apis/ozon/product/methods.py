@@ -25,6 +25,7 @@ class ProductMethods(SellerApiABCMethods):
         offer_id: list[str] | None = None,
         product_id: list[int] | None = None,
         sku: list[int] | None = None,
+        raw: bool = False,
     ) -> list[Product]:
         """
         Получить список информации о товарах.
@@ -46,15 +47,19 @@ class ProductMethods(SellerApiABCMethods):
                 "sku": sku,
             },
         )
+        if raw == True:
+            return data["result"]["items"]
         return [
             Product.from_dict(raw_product) for raw_product in data["result"]["items"]
         ]
+
 
     async def list_attributes(
         self,
         iter_: bool = True,
         limit: int = 1000,
         dir_="DESC",
+        raw: bool = False,
         **kwargs: Unpack[ListAttributesFilter],
     ) -> list[Product]:
         """
@@ -95,4 +100,54 @@ class ProductMethods(SellerApiABCMethods):
         while iter_ and data["last_id"]:
             _, data = await make_request(data["last_id"])
 
+        if raw == True:
+            return raw_products
         return [Product.from_dict(raw_product) for raw_product in raw_products]
+    
+
+    async def list_product(
+        self,
+        iter_: bool = True,
+        limit: int = 1000,
+        raw: bool = False,
+        **kwargs: Unpack[ListAttributesFilter],
+    ) -> list[Product]:
+        """
+        Получить список товаров селлера. Если не указывать критерии фильтрации,
+        будут получены все товары селлера.
+        # Аргументы:
+        * iter_ (по умолчанию True) - необходимо ли получать все объекты,
+        итерируясь по страницам
+        * limit (по умолчанию 1000) - максимальное количество объектов, которое будет
+        получено за один запрос
+        * offer_id (опционально) - Фильтр по параметру offer_id.
+        Можно передавать список значений.
+        * product_id (опционально) - Фильтр по параметру product_id.
+        Можно передавать список значений.
+        * visibility (опционально - Фильтр по видимости товара
+        ([Visibility](enums.md#ozon.product.enums.Visibility)
+        """
+        
+        raw_products = []
+
+        async def make_request(last_id=None):
+            resp, decoded_resp = await self.client.post(
+                API_PATH["list_product"],
+                data={
+                    "limit": limit,
+                    "filter": kwargs,
+                }
+                | ({"last_id": last_id} if last_id else {}),
+            )
+            nonlocal raw_products
+            raw_products += decoded_resp["result"]['items']
+            return resp, decoded_resp
+
+        _, data = await make_request()
+        while iter_ and data["result"]["last_id"]:
+            _, data = await make_request(data["result"]["last_id"])
+
+        if raw == True:
+            return raw_products
+        raise NotImplementedError(f" Для данного метода предусмотрена выгрузка только сырых" 
+                                  f" данных, используйте аттрибут raw=True") 
